@@ -1,5 +1,5 @@
 # Project specification
-Degree programme: bachelor's in computer sciende (CS).
+Degree programme: bachelor's in computer science (CS).
 
 
 For the sake of consistency, both the code and the documentation is written in English. The programming language chosen for this project is Java. In addition, I know C#, Python, and JavaScript to such a degree that I should be able to peer review projects written in those languages.
