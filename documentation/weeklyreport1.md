@@ -1,0 +1,7 @@
+# Weekly report 1
+
+I attended the starting lecture of the course on Tuesday the 5th of September. During the lecture, the teacher went through the Moodle page of the course and introduced the project topic ideas available out-of-the-box. I had been interested in the RSA algorithm already on the Introduction to Networking course, and decided to give the actual implementation of the algorithm a go.
+
+The first week mostly comprised of creating the initial project structure and writing the required documentation. I also googled a bit so that I was more confident I knew what the algorithm was supposed to do, and how I could possibly reach that goal. I knew and remembered the rough idea of the RSA encryption, but I had never really thought about how it might be used in the simplest use case imaginable (i.e., my use case). This is why I decided to have a brainstorming session with ChatGPT from OpenAI. I explained my initial thought process and asked whether it was even close to being worth implementing (which it was, yay!).
+
+I was unsure of how I could implement something a bit more challenging than just the process of encrypting and then decrypting the same message during one and the same session. Since the main focus of this project is algorithms, not security, I decided to write the necessary information in simple text files which would be easy to process without extra hassle. If there is something I should take into account or if there is some better (yet simple) way to achieve this, I would be interested to know!
