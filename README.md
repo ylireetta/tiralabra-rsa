@@ -1,7 +1,7 @@
 # tiralabra-rsa
 
 ## Weekly reports
-- Week 1
+- [Weekly report 1](./documentation/weeklyreport1.md "Weekly report 1")
 - Week 2
 - Week 3
 - Week 4
