@@ -10,24 +10,24 @@ Users provide the program input. The user inputs a message they want to either e
 
 There are two use cases:
 1. Message encryption
-- Program input 1 = sender's username 
-- Program input 2 = recipient's username
-- Program input 3 = the message to encrypt
-- If there is no key pair for the recipient yet:
-    - The program generates a public and a private key for the user, using program input 1 (for possible future use)
-    - The sender's key pair is stored in text files (separate file for each key)
-- Encryption:
-    - The program searches for a text file containing the public key of the recipient using program input 2 (e.g., recipientname_public_key.txt)
-    - If a public key is found, it is used to encrypt the message (program input 3)
-    - If a public key is *not* found, the key pair for the recipient is generated on the fly, written in text files, and the public key is used to encrypt the message (program input 3)
-- The output is the RSA encrypted message
+    - Program input 1 = sender's username 
+    - Program input 2 = recipient's username
+    - Program input 3 = the message to encrypt
+    - If there is no key pair for the recipient yet:
+        - The program generates a public and a private key for the user, using program input 1 (for possible future use)
+        - The sender's key pair is stored in text files (separate file for each key)
+    - Encryption:
+        - The program searches for a text file containing the public key of the recipient using program input 2 (e.g., recipientname_public_key.txt)
+        - If a public key is found, it is used to encrypt the message (program input 3)
+        - If a public key is *not* found, the key pair for the recipient is generated on the fly, written in text files, and the public key is used to encrypt the message (program input 3)
+    - The output is the RSA encrypted message
 
 2. Message decryption
-- Program input 1 = current user's username (i.e., the recipient)
-- Program input 2 = the message to decrypt
-- The program searches for a text file containing the private key of the recipient using program input 1 (e.g., recipientname_private_key.txt)
-- If found, the private key located in the text file is used for message decryption
-- The output is the decrypted message
+    - Program input 1 = current user's username (i.e., the recipient)
+    - Program input 2 = the message to decrypt
+    - The program searches for a text file containing the private key of the recipient using program input 1 (e.g., recipientname_private_key.txt)
+    - If found, the private key located in the text file is used for message decryption
+    - The output is the decrypted message
 
 Usernames need to be unique for the text file system to work, so the program contains some sort of validation when a user asks to encrypt a message. If a key pair for the given username already exists, the existing information is used to encrypt any new messages.
 
