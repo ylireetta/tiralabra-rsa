@@ -1,7 +1,14 @@
 # Project specification
 Degree programme: bachelor's in computer science (CS).
 
-This project depicts the implementation of the [RSA algorithm](https://en.wikipedia.org/wiki/RSA_(cryptosystem) "RSA in Wikipedia"). The problem I will solve is the basic use case of encrypting and decrypting messages using user-specific public and private keys. I might also implement some sort of binary search to make it more efficient to search for text files that start with the user's username (i.e., it makes no sense to start the search from 'a' when the username received starts with 'x'). The reason I chose the RSA encryption algorithm is personal interest - I thought the topic was interesting when I first came across the more detailed explanation of the algorithm during Introduction to Networking, and this is a perfect opportunity to dive a bit deeper.
+This project depicts the implementation of the [RSA algorithm](https://en.wikipedia.org/wiki/RSA_(cryptosystem) "RSA in Wikipedia"). The problem I will solve is the basic use case of encrypting and decrypting messages using user-specific public and private keys. The reason I chose the RSA encryption algorithm is personal interest - I thought the topic was interesting when I first came across the more detailed explanation of the algorithm during Introduction to Networking, and this is a perfect opportunity to dive a bit deeper.
+
+There are several different algorithms that need to be implemented in order for the RSA algorithm to work as expected. Here are a few I have thought of so far:
+- Miller-Rabin primality test to determine whether a randomly generated integer is *likely* to be prime
+- Euclidean algorithm to find the greatest common divisor when implementing the Miller-Rabin test
+- Extended Euclidean algorithm when generating the private exponent part of the private key
+
+I might also implement some sort of binary search to make it more efficient to search for text files that start with the user's username (i.e., it makes no sense to start the search from 'a' when the username received starts with 'x').
 
 For the sake of consistency, both the code and the documentation is written in English. The programming language chosen for this project is Java. In addition, I know C#, Python, and JavaScript to such a degree that I should be able to peer review projects written in those languages.
 
