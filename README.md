@@ -9,7 +9,7 @@
 - Week 6
 
 ## How to run the program
-Generate the executable JAR file by running `mvn package` in the project root directory (i.e., where the project pom.xml file is located). Still in the project root directory, the program can then be executed by running the following command:
+Generate the executable JAR file by running `mvn package` in the project root directory (i.e., where the project pom.xml file is located). Still in the project root directory, the program can then be executed by running the following command (this will probably work on my machine only, looking at the path; leaving this just as a note for myself):
 ```
 java -cp target/tiralabraproject-rsa-1.0-SNAPSHOT.jar:/home/ylireett/.m2/repository/commons-lang/commons-lang/2.5/commons-lang-2.5.jar com.ylireetta.tiralabraproject_rsa.Main
 ```
