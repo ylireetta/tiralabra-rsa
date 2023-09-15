@@ -29,7 +29,7 @@ public class PrimeHelper {
      * @param n The integer to test for primality.
      * @return Boolean indicating whether n is a likely prime or not.
      */
-    private static boolean isPrime(long n) {
+    public static boolean isPrime(long n) {
         // If n is less than two or even, it cannot be prime.
         if (n < 2 || n % 2 == 0) return false;
         
@@ -65,7 +65,7 @@ public class PrimeHelper {
             d = d / 2;
         }
         
-        // At this point, 'r' is the largest power of 2 such that 2^r divides 'n - 1', and 'd' is the remainder..
+        // At this point, 'r' is the largest power of 2 such that 2^r divides 'n - 1', and 'd' is the remainder.
         return new long[]{r, d};
     }
     
