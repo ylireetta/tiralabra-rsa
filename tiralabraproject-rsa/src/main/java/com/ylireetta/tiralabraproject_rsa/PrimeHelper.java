@@ -2,10 +2,6 @@ package com.ylireetta.tiralabraproject_rsa;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- *
- * @author ylireett
- */
 public class PrimeHelper {
     
     /***

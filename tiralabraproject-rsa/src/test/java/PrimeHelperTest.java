@@ -3,10 +3,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 
-/**
- *
- * @author ylireett
- */
 public class PrimeHelperTest {
     private static long[] primes;
     private static long[] composites;

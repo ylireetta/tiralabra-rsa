@@ -1,9 +1,5 @@
 package com.ylireetta.tiralabraproject_rsa;
 
-/**
- *
- * @author ylireett
- */
 public class Main {
 
     /**
