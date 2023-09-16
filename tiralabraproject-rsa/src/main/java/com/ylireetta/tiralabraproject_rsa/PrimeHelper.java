@@ -9,11 +9,11 @@ public class PrimeHelper {
      * @return A prime number.
      */
     public static long generatePrime() {
-        long primeCandidate = ThreadLocalRandom.current().nextLong(10000);
+        long primeCandidate = ThreadLocalRandom.current().nextLong(100000L, 10000000000L);
         //System.out.println("Prime candidate " + primeCandidate);
         
         while (!isPrime(primeCandidate)) {
-            primeCandidate = ThreadLocalRandom.current().nextLong(10000);
+            primeCandidate = ThreadLocalRandom.current().nextLong(100000L, 10000000000L);
             //System.out.println("Did not find prime or a suitable prime, new candidate " + primeCandidate);
         }
         
@@ -28,6 +28,8 @@ public class PrimeHelper {
     public static boolean isPrime(long n) {
         // If n is less than two or even, it cannot be prime.
         if (n < 2 || n % 2 == 0) return false;
+        
+        if (divisibleBySmallPrime(n)) return false;
         
         // Write n-1 as 2^r*d
         long[] resultArray = factorizePowerTwo(n);
@@ -172,6 +174,22 @@ public class PrimeHelper {
             
         }
         // composite
+        return false;
+    }
+    
+    /***
+     * Sieve out prime candidates divisible by small primes before running Miller-Rabin test.
+     * @param n The number under test for primality.
+     * @return True if n is divisible by one of the first small primes, false otherwise.
+     */
+    private static boolean divisibleBySmallPrime(long n) {
+        long[] smallPrimes = new long[]{3, 5, 7, 11, 13, 17, 19, 23, 27, 29};
+        for (long small : smallPrimes) {
+            if (n % small == 0) {
+                return true;
+            }
+        }
+        
         return false;
     }
 }

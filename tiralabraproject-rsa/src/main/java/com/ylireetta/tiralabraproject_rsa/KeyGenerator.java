@@ -59,12 +59,19 @@ public class KeyGenerator {
         long euler = (p - 1) * (q - 1);
         long publicExponent = 65537;
         
-        long greatestCommonDivisor = PrimeHelper.extendedEuclidean(publicExponent, euler)[0];
+        long[] extendedEuclideanResult = PrimeHelper.extendedEuclidean(publicExponent, euler);
+        long greatestCommonDivisor = extendedEuclideanResult[0];
         
         // if gcd == 1, publicExponent (i.e., e) is coprime to euler and can be used.
         if (greatestCommonDivisor == 1) {
-            // There is a bug somewhere here, the private exponent may become negative in some cases.
-            long privateExponent = PrimeHelper.extendedEuclidean(publicExponent, euler)[1];
+            long privateExponent = extendedEuclideanResult[1];
+            
+            // According to ChatGPT:
+            // "Mathematically, a negative modular inverse is equivalent to its positive counterpart modulo the modulus (n). In other words, -d is equivalent to (n - d) modulo n"
+            // "Adding n to a negative d value doesn't change its modular equivalence and guarantees that d is positive and within the valid range (0 < d < n)."
+            if (privateExponent < 0) {
+                privateExponent += n;
+            }
             
             // Now we have the private exponent of the private key (i.e., d).
             setPublicKey(new PublicKey(publicExponent, n));

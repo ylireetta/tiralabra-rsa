@@ -23,6 +23,11 @@ public class PrimeHelperTest {
         composites[1] = 187;
         composites[2] = 667;
         composites[3] = 493;
+        
+        // Test a few Carmichael numbers.
+        composites[4] = 561;
+        composites[5] = 1105;
+        composites[6] = 1729;
     }
 
     @Test
