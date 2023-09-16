@@ -3,6 +3,7 @@ package com.ylireetta.tiralabraproject_rsa;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PrimeHelper {
+    private static long[] smallPrimes = new long[]{3, 5, 7, 11, 13, 17, 19, 23, 27, 29};
     
     /***
      * Generate a prime number.
@@ -183,7 +184,6 @@ public class PrimeHelper {
      * @return True if n is divisible by one of the first small primes, false otherwise.
      */
     private static boolean divisibleBySmallPrime(long n) {
-        long[] smallPrimes = new long[]{3, 5, 7, 11, 13, 17, 19, 23, 27, 29};
         for (long small : smallPrimes) {
             if (n % small == 0) {
                 return true;
