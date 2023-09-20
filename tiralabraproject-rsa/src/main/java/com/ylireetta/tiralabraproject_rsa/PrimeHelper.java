@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class PrimeHelper {
     private static long[] smallPrimes = new long[]{3, 5, 7, 11, 13, 17, 19, 23, 27, 29};
     
-    /***
+    /**
      * Generate a prime number.
      * @return A prime number.
      */
@@ -21,7 +21,7 @@ public class PrimeHelper {
         return primeCandidate;
     }
     
-    /***
+    /**
      * Miller-Rabin primality test.
      * @param n The integer to test for primality.
      * @return Boolean indicating whether n is a likely prime or not.
@@ -50,7 +50,7 @@ public class PrimeHelper {
         return true;
     }
     
-    /***
+    /**
      * Write n - 1 as 2^r * d
      * @param n The prime candidate under test.
      * @return An array with values r and d.
@@ -68,7 +68,7 @@ public class PrimeHelper {
         return new long[]{r, d};
     }
     
-    /***
+    /**
      * 
      * @param n Number to test.
      * @param k Number of random witnesses to generate.
@@ -89,7 +89,7 @@ public class PrimeHelper {
         return witnesses;
     }
     
-    /***
+    /**
      * Find x and y, i.e. Bézout's coefficients of a and b.
      * @param a The first input value.
      * @param b The second input value.
@@ -118,7 +118,7 @@ public class PrimeHelper {
         return result;
     }
     
-    /***
+    /**
      * https://www.geeksforgeeks.org/primality-test-set-3-miller-rabin/
      * @param a Random witness against which the test is made.
      * @param d The remainder d calculated when (n - 1) was written as 2^r * d.
@@ -135,7 +135,7 @@ public class PrimeHelper {
         return squaredPowerModCheck(d, n, result);
     }
     
-    /***
+    /**
      * Calculate a^d % n to be used in the Miller-Rabin test.
      * @param base The random witness against which the test is made.
      * @param exponent The remainder part which was calculated when (n - 1) was written as 2^r * d.
@@ -178,7 +178,7 @@ public class PrimeHelper {
         return false;
     }
     
-    /***
+    /**
      * Sieve out prime candidates divisible by small primes before running Miller-Rabin test.
      * @param n The number under test for primality.
      * @return True if n is divisible by one of the first small primes, false otherwise.

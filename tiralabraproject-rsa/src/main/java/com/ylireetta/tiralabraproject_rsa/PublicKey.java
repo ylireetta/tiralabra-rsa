@@ -3,9 +3,10 @@ package com.ylireetta.tiralabraproject_rsa;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class PublicKey {
+public class PublicKey implements UserKey {
     private long e;
     private long n;
+    private final String type = "public";
     
     public PublicKey(long e, long n) {
         this.e = e;
@@ -18,6 +19,10 @@ public class PublicKey {
     
     public long getModulus() {
         return n;
+    }
+    
+    public String getType() {
+        return type;
     }
     
     public void setPublicExponent(long e) {

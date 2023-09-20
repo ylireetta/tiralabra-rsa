@@ -1,11 +1,13 @@
 package com.ylireetta.tiralabraproject_rsa;
 
+import java.util.ArrayList;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 public class KeyGenerator {
     private PublicKey publicKey;
     private PrivateKey privateKey;
+    private final ArrayList<UserKey> keys = new ArrayList<>();
         
     public PublicKey getPublicKey() {
         return publicKey;
@@ -15,12 +17,18 @@ public class KeyGenerator {
         return privateKey;
     }
     
+    public ArrayList<UserKey> getKeys() {
+        return keys;
+    }
+    
     public void setPublicKey(PublicKey key) {
         this.publicKey = key;
+        this.keys.add(key); // TODO: make sure that there is only one public key in the list.
     }
     
     public void setPrivateKey(PrivateKey key) {
         this.privateKey = key;
+        this.keys.add(key); // TODO: make sure that there is only one private key in the list.
     }
     
     @Override
@@ -31,8 +39,8 @@ public class KeyGenerator {
             .toString();
     }
     
-    /***
-     * Generates public and private keys.
+    /**
+     * Generate public and private keys.
      */
     public void generateKeys() {
         long p = PrimeHelper.generatePrime();

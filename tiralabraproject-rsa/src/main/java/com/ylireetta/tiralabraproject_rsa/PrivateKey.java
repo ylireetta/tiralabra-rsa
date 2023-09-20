@@ -3,9 +3,10 @@ package com.ylireetta.tiralabraproject_rsa;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class PrivateKey {
+public class PrivateKey implements UserKey {
     private long d;
     private long n;
+    private final String type = "private";
     
     public PrivateKey(long d, long n) {
         this.d = d;
@@ -18,6 +19,10 @@ public class PrivateKey {
     
     public long getModulus() {
         return n;
+    }
+    
+    public String getType() {
+        return type;
     }
     
     public void setPrivateExponent(long d) {
