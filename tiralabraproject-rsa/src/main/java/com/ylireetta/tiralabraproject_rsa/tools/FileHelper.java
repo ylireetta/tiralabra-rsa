@@ -1,12 +1,15 @@
-package com.ylireetta.tiralabraproject_rsa;
+package com.ylireetta.tiralabraproject_rsa.tools;
 
+import com.ylireetta.tiralabraproject_rsa.UserKey;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class FileHelper {
     private final KeyGenerator generator = new KeyGenerator();
@@ -101,15 +104,41 @@ public class FileHelper {
      * @return The key file of the user if found, null otherwise.
      */
     private File retrieveUserFile(String username, String keyType) {
-        File[] publicList = new File("resources/keyfiles/" + keyType).listFiles();
-        for (File file : publicList) {
-            // TODO: check the whole username part until the first underscore in the file name.
-            if (file.getName().startsWith(username)) {
+        File[] fileList = new File("resources/keyfiles/" + keyType).listFiles();
+        // Match the first part of the file name, up until the first underscore.
+        String regex = "^" + Pattern.quote(username) + "_.*$";
+        Pattern pattern = Pattern.compile(regex);
+        
+        for (File file : fileList) {
+            if (pattern.matcher(file.getName()).matches()) {
                 return file;
             }
         }
         
         return null;
+    }
+    
+    /**
+     * Check if a key file for the given username already exists. TODO: this needs to be refactored; the method above is almost exactly the same.
+     * @param username The username to check.
+     * @return True if a public or a private key file already exists with the given username, false otherwise.
+     */
+    public boolean usernameTaken(String username) {
+        String regex = "^" + Pattern.quote(username) + "_.*$";
+        Pattern pattern = Pattern.compile(regex);
+        
+        String[] publicList = new File("resources/keyfiles/public").list();
+        String[] privateList = new File("resources/keyfiles/private").list();
+        
+        List<String> allFileNames = new ArrayList<>(Arrays.asList(publicList));
+        allFileNames.addAll(Arrays.asList(privateList));
+        allFileNames.sort(String::compareToIgnoreCase);
+        
+        for (String name : allFileNames) {
+            if (pattern.matcher(name).matches()) return true;
+        }
+        
+        return false;
     }
     
 }

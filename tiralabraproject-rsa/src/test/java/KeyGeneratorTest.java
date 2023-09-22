@@ -1,4 +1,4 @@
-import com.ylireetta.tiralabraproject_rsa.KeyGenerator;
+import com.ylireetta.tiralabraproject_rsa.tools.KeyGenerator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

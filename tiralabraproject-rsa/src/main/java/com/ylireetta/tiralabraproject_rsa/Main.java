@@ -1,7 +1,5 @@
 package com.ylireetta.tiralabraproject_rsa;
 
-import java.util.Scanner;
-
 public class Main {
 
     /**

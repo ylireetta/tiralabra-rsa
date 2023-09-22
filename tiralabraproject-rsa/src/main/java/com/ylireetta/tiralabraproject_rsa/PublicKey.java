@@ -1,35 +1,37 @@
 package com.ylireetta.tiralabraproject_rsa;
 
+import java.math.BigInteger;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 public class PublicKey implements UserKey {
-    private long e;
-    private long n;
+    private BigInteger e;
+    private BigInteger n;
     private final String type = "public";
     
-    public PublicKey(long e, long n) {
+    public PublicKey(BigInteger e, BigInteger n) {
         this.e = e;
         this.n = n;
     }
     
-    public long getPublicExponent() {
+    public BigInteger getPublicExponent() {
         return e;
     }
     
-    public long getModulus() {
+    public BigInteger getModulus() {
         return n;
     }
     
+    @Override
     public String getType() {
         return type;
     }
     
-    public void setPublicExponent(long e) {
+    public void setPublicExponent(BigInteger e) {
         this.e = e;
     }
     
-    public void setModulus(long n) {
+    public void setModulus(BigInteger n) {
         this.n = n;
     }
     

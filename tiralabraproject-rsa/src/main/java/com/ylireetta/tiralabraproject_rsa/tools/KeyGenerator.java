@@ -1,5 +1,9 @@
-package com.ylireetta.tiralabraproject_rsa;
+package com.ylireetta.tiralabraproject_rsa.tools;
 
+import com.ylireetta.tiralabraproject_rsa.PrivateKey;
+import com.ylireetta.tiralabraproject_rsa.PublicKey;
+import com.ylireetta.tiralabraproject_rsa.UserKey;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -7,7 +11,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class KeyGenerator {
     private PublicKey publicKey;
     private PrivateKey privateKey;
-    private final ArrayList<UserKey> keys = new ArrayList<>();
+    private ArrayList<UserKey> keys;
         
     public PublicKey getPublicKey() {
         return publicKey;
@@ -31,6 +35,10 @@ public class KeyGenerator {
         this.keys.add(key); // TODO: make sure that there is only one private key in the list.
     }
     
+    public void resetKeyList() {
+        this.keys = new ArrayList();
+    }
+    
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
@@ -43,15 +51,17 @@ public class KeyGenerator {
      * Generate public and private keys.
      */
     public void generateKeys() {
-        long p = PrimeHelper.generatePrime();
-        long q = PrimeHelper.generatePrime();
+        resetKeyList();
+        
+        BigInteger p = PrimeHelper.generatePrime();
+        BigInteger q = PrimeHelper.generatePrime();
         
         // Make sure p and q are not equal.
-        while (p == q) {
+        while (p.equals(q)) {
             q = PrimeHelper.generatePrime();
         }
         
-        long n = p * q;
+        BigInteger n = p.multiply(q);
         
         /* Choose a number e:
         e < n
@@ -64,21 +74,21 @@ public class KeyGenerator {
         */
         
         // Euler's totient function
-        long euler = (p - 1) * (q - 1);
-        long publicExponent = 65537;
+        BigInteger euler = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
+        BigInteger publicExponent = new BigInteger("65537");
         
-        long[] extendedEuclideanResult = PrimeHelper.extendedEuclidean(publicExponent, euler);
-        long greatestCommonDivisor = extendedEuclideanResult[0];
+        BigInteger[] extendedEuclideanResult = PrimeHelper.extendedEuclidean(publicExponent, euler);
+        BigInteger greatestCommonDivisor = extendedEuclideanResult[0];
         
         // if gcd == 1, publicExponent (i.e., e) is coprime to euler and can be used.
-        if (greatestCommonDivisor == 1) {
-            long privateExponent = extendedEuclideanResult[1];
+        if (greatestCommonDivisor.equals(BigInteger.ONE)) {
+            BigInteger privateExponent = extendedEuclideanResult[1];
             
             // According to ChatGPT:
             // "Mathematically, a negative modular inverse is equivalent to its positive counterpart modulo the modulus (n). In other words, -d is equivalent to (n - d) modulo n"
             // "Adding n to a negative d value doesn't change its modular equivalence and guarantees that d is positive and within the valid range (0 < d < n)."
-            if (privateExponent < 0) {
-                privateExponent += n;
+            if (privateExponent.compareTo(BigInteger.ZERO) < 0) {
+                privateExponent = privateExponent.add(n);
             }
             
             // Now we have the private exponent of the private key (i.e., d).

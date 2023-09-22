@@ -1,5 +1,6 @@
 package com.ylireetta.tiralabraproject_rsa;
 
+import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -43,7 +44,9 @@ public class UserInterface {
     private void writeUserKeys(Scanner scanner) {
         String username = validateUsername(scanner);
         
-        if (username != null) {
+        if (fileHelper.usernameTaken(username)) {
+            System.out.println("Username already taken.");
+        } else if (username != null) {
             fileHelper.writeKeys(username);
         } else {
             // TODO: ask for another name

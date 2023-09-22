@@ -1,35 +1,37 @@
 package com.ylireetta.tiralabraproject_rsa;
 
+import java.math.BigInteger;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 public class PrivateKey implements UserKey {
-    private long d;
-    private long n;
+    private BigInteger d;
+    private BigInteger n;
     private final String type = "private";
     
-    public PrivateKey(long d, long n) {
+    public PrivateKey(BigInteger d, BigInteger n) {
         this.d = d;
         this.n = n;
     }
     
-    public long getPrivateExponent() {
+    public BigInteger getPrivateExponent() {
         return d;
     }
     
-    public long getModulus() {
+    public BigInteger getModulus() {
         return n;
     }
     
+    @Override
     public String getType() {
         return type;
     }
     
-    public void setPrivateExponent(long d) {
+    public void setPrivateExponent(BigInteger d) {
         this.d = d;
     }
     
-    public void setModulus(long n) {
+    public void setModulus(BigInteger n) {
         this.n = n;
     }
     
