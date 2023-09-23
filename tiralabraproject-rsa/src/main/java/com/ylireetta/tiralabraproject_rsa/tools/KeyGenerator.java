@@ -35,6 +35,9 @@ public class KeyGenerator {
         this.keys.add(key); // TODO: make sure that there is only one private key in the list.
     }
     
+    /**
+     * Overwrite previous key list so that new user keys can be created.
+     */
     public void resetKeyList() {
         this.keys = new ArrayList();
     }

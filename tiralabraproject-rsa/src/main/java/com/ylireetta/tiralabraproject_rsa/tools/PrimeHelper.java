@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 public class PrimeHelper {
-    public static final List<BigInteger> smallPrimes = sieveOfEratosthenes();
+    public static final List<BigInteger> SMALLPRIMES = sieveOfEratosthenes();
     
     /**
      * Generate a prime number.
@@ -30,9 +30,13 @@ public class PrimeHelper {
     public static boolean isPrime(BigInteger n) {
         // If n is less than two or even, it cannot be prime.
         // When comparing BigInteger x to y, the result is -1 if x < y.
-        if (n.compareTo(BigInteger.TWO) == -1 || n.mod(BigInteger.TWO).equals(BigInteger.ZERO)) return false;
+        if (n.compareTo(BigInteger.TWO) == -1 || n.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+            return false;
+        }
         
-        if (divisibleBySmallPrime(n)) return false;
+        if (divisibleBySmallPrime(n)) {
+            return false;
+        }
         
         // Write n-1 as 2^r*d
         BigInteger[] resultArray = factorizePowerTwo(n);
@@ -142,7 +146,9 @@ public class PrimeHelper {
         
         // If either of the conditions is true, return and repeat with a different value of a.
         // NOTE: this is merely the first part of the test. We need to test for whether there exists a non-trivial square root for 1 (mod n).
-        if (result.equals(BigInteger.ONE) || result.equals(n.subtract(BigInteger.ONE))) return true;
+        if (result.equals(BigInteger.ONE) || result.equals(n.subtract(BigInteger.ONE))) {
+            return true;
+        }
         
         return squaredPowerModCheck(d, n, result);
     }
@@ -155,7 +161,9 @@ public class PrimeHelper {
      * @return Result of a^d % n, which is the remainder when a is raised to the power of d and the result is divided by n.
      */
     private static BigInteger modularExponentiation(BigInteger base, BigInteger exponent, BigInteger modulus) {
-        if (modulus.equals(BigInteger.ONE)) return BigInteger.ZERO;
+        if (modulus.equals(BigInteger.ONE)) {
+            return BigInteger.ZERO;
+        }
         
         BigInteger result = BigInteger.ONE;
         BigInteger baseValue = base.mod(modulus); // a % n
@@ -183,8 +191,13 @@ public class PrimeHelper {
             x = x.multiply(x).mod(n);
             d = d.multiply(BigInteger.TWO);
             
-            if (x.equals(BigInteger.ONE)) return false;
-            if (x.equals(n.subtract(BigInteger.ONE))) return true;
+            if (x.equals(BigInteger.ONE)) {
+                return false;
+            }
+            
+            if (x.equals(n.subtract(BigInteger.ONE))) {
+                return true;
+            }
             
         }
         // composite
@@ -198,7 +211,9 @@ public class PrimeHelper {
      */
     private static boolean divisibleBySmallPrime(BigInteger n) {
         for (BigInteger small : smallPrimes) {
-            if (small.equals(n)) break;
+            if (small.equals(n)) {
+                break;
+            }
             
             BigInteger modResult = n.mod(small);
             

@@ -1,6 +1,8 @@
 package com.ylireetta.tiralabraproject_rsa;
 
 import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -8,8 +10,9 @@ public class UserInterface {
     
     /**
      * Start reading user input and executing commands based on it.
+     * @throws IOException If file write fails.
      */
-    public void start() {
+    public void start() throws IOException {
         System.out.println("Welcome!");
         Scanner scanner = new Scanner(System.in);
         
@@ -41,15 +44,17 @@ public class UserInterface {
      * Generate new keys for the specified user and write them to files.
      * @param scanner  The scanner used to read user input in the UserInterface class.
      */
-    private void writeUserKeys(Scanner scanner) {
+    private void writeUserKeys(Scanner scanner) throws IOException {
         String username = validateUsername(scanner);
         
         if (fileHelper.usernameTaken(username)) {
             System.out.println("Username already taken.");
         } else if (username != null) {
-            fileHelper.writeKeys(username);
-        } else {
-            // TODO: ask for another name
+            try {
+                fileHelper.writeKeys(username);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         }
         
     }
@@ -58,13 +63,15 @@ public class UserInterface {
      * Read the contents of the specified user's key files, if found.
      * @param scanner The scanner used to read user input in the UserInterface class.
      */
-    private void readFromUserFile(Scanner scanner) {
+    private void readFromUserFile(Scanner scanner) throws FileNotFoundException {
         String username = validateUsername(scanner);
         
         if (username != null) {
-            fileHelper.readFromFile(username);
-        } else {
-            // TODO: ask for another name.
+            try {
+                fileHelper.readFromFile(username);
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
     

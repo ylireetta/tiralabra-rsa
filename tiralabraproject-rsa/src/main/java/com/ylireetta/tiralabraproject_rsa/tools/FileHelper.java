@@ -14,18 +14,47 @@ import java.util.regex.Pattern;
 public class FileHelper {
     private final KeyGenerator generator = new KeyGenerator();
     private final ArrayList<String> keyTypes = new ArrayList<>(Arrays.asList("public", "private"));
+    private String baseDirectory;
+    
+    /**
+     * Constructor for basic usage. Key files get generated in the resources directory. 
+     */
+    public FileHelper() {
+        this.baseDirectory = "resources/keyfiles/";
+    }
+    
+    /**
+     * Constructor for test usage. Key files get generated in the supplied directory (i.e. some tempDir).
+     * @param baseDirectory The base directory where the key files should be generated.
+     */
+    public FileHelper(String baseDirectory) {
+        this.baseDirectory = baseDirectory;
+    }
+    
+    public String getBaseDirectory() {
+        return baseDirectory;
+    }
     
     /**
      * Create public and private keys for the user, and write the keys to their respective files.
      * @param username The user whose username will be used in the file names.
+     * @return True if both the public and private key files were created successfully, false otherwise.
+     * @throws java.io.IOException 
      */
-    public void writeKeys(String username) {
+    public boolean writeKeys(String username) throws IOException {
         generator.generateKeys();
 
         String lowerCase = username.toLowerCase();
+        int successfulWrites = 0;
+        
         for (UserKey key : generator.getKeys()) {
-            writeToFile(key.getType(), lowerCase, key);
+            if (writeToFile(key.getType(), lowerCase, key)) {
+                successfulWrites++;
+            }
         }
+        
+        // Return true if both file writes were successful.
+        return successfulWrites == 2;
     }
     
     /**
@@ -33,9 +62,11 @@ public class FileHelper {
      * @param keyType The key type to use as part of the file names.
      * @param username The user whose username will be used in the file names.
      * @param key The key whose value will be written in the file.
+     * @return True if file creation and file write was successful, false otherwise.
+     * @throws IOException 
      */
-    private void writeToFile(String keyType, String username, UserKey key) {
-        String filePath = "resources/keyfiles/" + keyType + "/";
+    private boolean writeToFile(String keyType, String username, UserKey key) throws IOException {
+        String filePath = getBaseDirectory() + "/" + keyType + "/";
         String fileName = username + "_" + keyType + "_key.txt";
         String completeName = filePath + fileName;
         
@@ -44,11 +75,12 @@ public class FileHelper {
                 FileWriter writer = new FileWriter(completeName);
                 writer.write(key.toString());
                 writer.close();
-                System.out.println("Wrote " + keyType + " key to a file.");
+                return true;
             } catch (IOException e) {
-                System.out.println("Failed to write " + keyType + " key to file.");
-                e.printStackTrace();
+                throw e;
             }
+        } else {
+            return false;
         }
     }
     
@@ -62,11 +94,10 @@ public class FileHelper {
             File file = new File(fileName);
             
             if (!file.createNewFile()) {
-                System.out.println("File already exists.");
+                // File already exists, won't create a new one.
                 return false;
             }
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
         return true;
@@ -75,9 +106,11 @@ public class FileHelper {
     /**
      * Read the contents of both the public and private user key files.
      * @param username The user whose files should be read.
+     * @throws java.io.FileNotFoundException If both public and private key files cannot be found for the specified user.
      */
-    public void readFromFile(String username) {
+    public void readFromFile(String username) throws FileNotFoundException {
         String lowerCase = username.toLowerCase();
+        int missingFiles = 0;
         
         for (String keyType : keyTypes) {
             File userFile = retrieveUserFile(lowerCase, keyType);
@@ -89,11 +122,16 @@ public class FileHelper {
                         System.out.println("Line from " + username + " key file: " + scanner.nextLine());
                     }   
                 } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    throw e;
                 }
             } else {
-                System.out.println("Could not find the " + keyType + " key file for user " + username + ".");
+                missingFiles++;
             }
+        }
+        
+        // Throw exception if no files were found.
+        if (missingFiles == 2) {
+            throw new FileNotFoundException("Key files missing for user " + username + ".");
         }
     }
     
@@ -104,7 +142,7 @@ public class FileHelper {
      * @return The key file of the user if found, null otherwise.
      */
     private File retrieveUserFile(String username, String keyType) {
-        File[] fileList = new File("resources/keyfiles/" + keyType).listFiles();
+        File[] fileList = new File(getBaseDirectory() + "/" + keyType).listFiles();
         // Match the first part of the file name, up until the first underscore.
         String regex = "^" + Pattern.quote(username) + "_.*$";
         Pattern pattern = Pattern.compile(regex);
@@ -127,15 +165,17 @@ public class FileHelper {
         String regex = "^" + Pattern.quote(username) + "_.*$";
         Pattern pattern = Pattern.compile(regex);
         
-        String[] publicList = new File("resources/keyfiles/public").list();
-        String[] privateList = new File("resources/keyfiles/private").list();
+        String[] publicList = new File(getBaseDirectory() + "public").list();
+        String[] privateList = new File(getBaseDirectory() + "private").list();
         
         List<String> allFileNames = new ArrayList<>(Arrays.asList(publicList));
         allFileNames.addAll(Arrays.asList(privateList));
         allFileNames.sort(String::compareToIgnoreCase);
         
         for (String name : allFileNames) {
-            if (pattern.matcher(name).matches()) return true;
+            if (pattern.matcher(name).matches()) {
+                return true;
+            }
         }
         
         return false;
