@@ -210,7 +210,7 @@ public class PrimeHelper {
      * @return True if n is divisible by one of the first small primes, false otherwise.
      */
     private static boolean divisibleBySmallPrime(BigInteger n) {
-        for (BigInteger small : smallPrimes) {
+        for (BigInteger small : SMALLPRIMES) {
             if (small.equals(n)) {
                 break;
             }

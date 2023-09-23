@@ -3,7 +3,7 @@
 ## Weekly reports
 - [Weekly report 1](./documentation/weeklyreport1.md "Weekly report 1")
 - [Weekly report 2](./documentation/weeklyreport2.md "Weekly report 2")
-- Week 3
+- [Weekly report 3](./documentation/weeklyreport3.md "Weekly report 3")
 - Week 4
 - Week 5
 - Week 6
