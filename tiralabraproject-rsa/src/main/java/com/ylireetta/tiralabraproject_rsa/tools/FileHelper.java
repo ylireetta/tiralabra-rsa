@@ -1,14 +1,18 @@
 package com.ylireetta.tiralabraproject_rsa.tools;
 
+import com.ylireetta.tiralabraproject_rsa.PrivateKey;
+import com.ylireetta.tiralabraproject_rsa.PublicKey;
 import com.ylireetta.tiralabraproject_rsa.UserKey;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class FileHelper {
@@ -106,9 +110,10 @@ public class FileHelper {
     /**
      * Read the contents of both the public and private user key files.
      * @param username The user whose files should be read.
-     * @throws java.io.FileNotFoundException If both public and private key files cannot be found for the specified user.
+     * @throws java.io.FileNotFoundException If neither public nor private key files can be found for the specified user.
+     * @throws IOException 
      */
-    public void readFromFile(String username) throws FileNotFoundException {
+    public void readFromFile(String username) throws FileNotFoundException, IOException {
         String lowerCase = username.toLowerCase();
         int missingFiles = 0;
         
@@ -116,14 +121,9 @@ public class FileHelper {
             File userFile = retrieveUserFile(lowerCase, keyType);
         
             if (userFile != null) {
-                try {
-                    Scanner scanner = new Scanner(userFile);
-                    while (scanner.hasNextLine()) {
-                        System.out.println("Line from " + username + " key file: " + scanner.nextLine());
-                    }   
-                } catch (FileNotFoundException e) {
-                    throw e;
-                }
+                UserKey key = getKeyFromFile(userFile, keyType);
+                System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
+                
             } else {
                 missingFiles++;
             }
@@ -179,6 +179,36 @@ public class FileHelper {
         }
         
         return false;
+    }
+    
+    private UserKey getKeyFromFile(File userFile, String keyType) throws IOException {
+        try (BufferedReader buffer = new BufferedReader(new FileReader(userFile))) {
+            String line;
+            while ((line = buffer.readLine()) != null) {
+                String[] elements = line.split(",");
+                
+                if (elements.length == 2) {
+                    BigInteger exponent = new BigInteger(elements[0]);
+                    BigInteger n = new BigInteger(elements[1]);
+                    
+                    switch (keyType) {
+                        case "public":
+                            return new PublicKey(exponent, n);
+                        case "private":
+                            return new PrivateKey(exponent, n);
+                        default:
+                            System.out.println("Invalid key type.");
+                            break;
+                    }
+                } else {
+                    System.out.println("Expected two elements in the file, found " + elements.length + ".");
+                }
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+        
+        return null;
     }
     
 }

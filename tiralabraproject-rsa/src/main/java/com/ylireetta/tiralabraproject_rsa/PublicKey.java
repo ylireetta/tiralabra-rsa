@@ -14,10 +14,12 @@ public class PublicKey implements UserKey {
         this.n = n;
     }
     
-    public BigInteger getPublicExponent() {
+    @Override
+    public BigInteger getExponent() {
         return e;
     }
     
+    @Override
     public BigInteger getModulus() {
         return n;
     }
@@ -27,7 +29,7 @@ public class PublicKey implements UserKey {
         return type;
     }
     
-    public void setPublicExponent(BigInteger e) {
+    public void setExponent(BigInteger e) {
         this.e = e;
     }
     

@@ -62,8 +62,10 @@ public class UserInterface {
     /**
      * Read the contents of the specified user's key files, if found.
      * @param scanner The scanner used to read user input in the UserInterface class.
+     * @throws FileNotFoundException
+     * @throws IOException 
      */
-    private void readFromUserFile(Scanner scanner) throws FileNotFoundException {
+    private void readFromUserFile(Scanner scanner) throws FileNotFoundException, IOException {
         String username = validateUsername(scanner);
         
         if (username != null) {

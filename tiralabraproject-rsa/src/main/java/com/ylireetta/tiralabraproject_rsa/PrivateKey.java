@@ -14,10 +14,12 @@ public class PrivateKey implements UserKey {
         this.n = n;
     }
     
-    public BigInteger getPrivateExponent() {
+    @Override
+    public BigInteger getExponent() {
         return d;
     }
     
+    @Override
     public BigInteger getModulus() {
         return n;
     }
@@ -27,7 +29,7 @@ public class PrivateKey implements UserKey {
         return type;
     }
     
-    public void setPrivateExponent(BigInteger d) {
+    public void setExponent(BigInteger d) {
         this.d = d;
     }
     
