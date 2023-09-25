@@ -87,11 +87,10 @@ public class KeyGenerator {
         if (greatestCommonDivisor.equals(BigInteger.ONE)) {
             BigInteger privateExponent = extendedEuclideanResult[1];
             
-            // According to ChatGPT:
-            // "Mathematically, a negative modular inverse is equivalent to its positive counterpart modulo the modulus (n). In other words, -d is equivalent to (n - d) modulo n"
-            // "Adding n to a negative d value doesn't change its modular equivalence and guarantees that d is positive and within the valid range (0 < d < n)."
+            // Private exponent cannot be negative. Add phi(n), i.e. Euler's totient function, and make sure d > 0.
+            // https://stackoverflow.com/a/21007972
             if (privateExponent.compareTo(BigInteger.ZERO) < 0) {
-                privateExponent = privateExponent.add(n);
+                privateExponent = privateExponent.add(euler);
             }
             
             // Now we have the private exponent of the private key (i.e., d).
