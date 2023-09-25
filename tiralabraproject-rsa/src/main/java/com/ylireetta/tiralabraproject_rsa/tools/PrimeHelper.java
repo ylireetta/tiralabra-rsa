@@ -160,7 +160,7 @@ public class PrimeHelper {
      * @param modulus The number by which the division is made. Basically n.
      * @return Result of a^d % n, which is the remainder when a is raised to the power of d and the result is divided by n.
      */
-    private static BigInteger modularExponentiation(BigInteger base, BigInteger exponent, BigInteger modulus) {
+    public static BigInteger modularExponentiation(BigInteger base, BigInteger exponent, BigInteger modulus) {
         if (modulus.equals(BigInteger.ONE)) {
             return BigInteger.ZERO;
         }

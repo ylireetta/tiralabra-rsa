@@ -141,7 +141,7 @@ public class FileHelper {
      * @param keyType The publicity class of the key.
      * @return The key file of the user if found, null otherwise.
      */
-    private File retrieveUserFile(String username, String keyType) {
+    public File retrieveUserFile(String username, String keyType) {
         File[] fileList = new File(getBaseDirectory() + "/" + keyType).listFiles();
         // Match the first part of the file name, up until the first underscore.
         String regex = "^" + Pattern.quote(username) + "_.*$";
@@ -181,7 +181,7 @@ public class FileHelper {
         return false;
     }
     
-    private UserKey getKeyFromFile(File userFile, String keyType) throws IOException {
+    public UserKey getKeyFromFile(File userFile, String keyType) throws IOException {
         try (BufferedReader buffer = new BufferedReader(new FileReader(userFile))) {
             String line;
             while ((line = buffer.readLine()) != null) {
