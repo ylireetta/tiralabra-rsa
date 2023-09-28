@@ -61,13 +61,13 @@ public class PrimeHelper {
      * @param n The prime candidate under test.
      * @return An array with values r and d.
      */
-    private static BigInteger[] factorizePowerTwo(BigInteger n) {
+    public static BigInteger[] factorizePowerTwo(BigInteger n) {
         BigInteger r = BigInteger.ZERO;
         BigInteger d = n.subtract(BigInteger.ONE);
         
         // remainder returns the remainder when d is divided by 2, i.e. d % 2
         while (d.remainder(BigInteger.TWO).equals(BigInteger.ZERO)) {
-            r.add(BigInteger.ONE);
+            r = r.add(BigInteger.ONE);
             d = d.divide(BigInteger.TWO);
         }
         
@@ -81,7 +81,7 @@ public class PrimeHelper {
      * @param k Number of random witnesses to generate.
      * @return An array with k random witnesses.
      */
-    private static BigInteger[] randomWitnesses(BigInteger n, int k) {
+    public static BigInteger[] randomWitnesses(BigInteger n, int k) {
         BigInteger[] witnesses = new BigInteger[k];
         
         for (int i = 0; i < k; i++) {
@@ -141,7 +141,7 @@ public class PrimeHelper {
      * @param n The number under test.
      * @return Whether n is a likely prime or not.
      */
-    private static boolean millerRabinTest(BigInteger a, BigInteger d, BigInteger n) {
+    public static boolean millerRabinTest(BigInteger a, BigInteger d, BigInteger n) {
         BigInteger result = modularExponentiation(a, d, n);
         
         // If either of the conditions is true, return and repeat with a different value of a.
@@ -186,7 +186,7 @@ public class PrimeHelper {
      * @param x The result calculated in the first stage of Miller-Rabin test.
      * @return True if n is a likely prime, false if n is composite.
      */
-    private static boolean squaredPowerModCheck(BigInteger d, BigInteger n, BigInteger x) {
+    public static boolean squaredPowerModCheck(BigInteger d, BigInteger n, BigInteger x) {
         while (!d.equals(n.subtract(BigInteger.ONE))) {
             x = x.multiply(x).mod(n);
             d = d.multiply(BigInteger.TWO);
@@ -209,7 +209,7 @@ public class PrimeHelper {
      * @param n The number under test for primality.
      * @return True if n is divisible by one of the first small primes, false otherwise.
      */
-    private static boolean divisibleBySmallPrime(BigInteger n) {
+    public static boolean divisibleBySmallPrime(BigInteger n) {
         for (BigInteger small : SMALLPRIMES) {
             if (small.equals(n)) {
                 break;
@@ -228,7 +228,7 @@ public class PrimeHelper {
      * Prepopulate the list of the first 200 small primes. The list is used for sieving out composites before running the Miller-Rabin test for prime candidates.
      * @return The list of the first 200 prime numbers.
      */
-    private static List<BigInteger> sieveOfEratosthenes() {
+    public static List<BigInteger> sieveOfEratosthenes() {
         // The 200th prime is 1223.
         boolean[] prime = new boolean[1223 + 1];
         Arrays.fill(prime, true);

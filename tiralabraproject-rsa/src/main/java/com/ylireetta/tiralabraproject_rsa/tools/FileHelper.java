@@ -69,7 +69,7 @@ public class FileHelper {
      * @return True if file creation and file write was successful, false otherwise.
      * @throws IOException 
      */
-    private boolean writeToFile(String keyType, String username, UserKey key) throws IOException {
+    public boolean writeToFile(String keyType, String username, UserKey key) throws IOException {
         String filePath = getBaseDirectory() + "/" + keyType + "/";
         String fileName = username + "_" + keyType + "_key.txt";
         String completeName = filePath + fileName;
@@ -93,7 +93,7 @@ public class FileHelper {
      * @param fileName The name of the file to create.
      * @return True if creation was successful, false if unsuccessful or if the file already exists.
      */
-    private boolean createFile(String fileName) {
+    public boolean createFile(String fileName) {
         try {
             File file = new File(fileName);
             
@@ -157,7 +157,7 @@ public class FileHelper {
     }
     
     /**
-     * Check if a key file for the given username already exists. TODO: this needs to be refactored; the method above is almost exactly the same.
+     * Check if a key file for the given username already exists.
      * @param username The username to check.
      * @return True if a public or a private key file already exists with the given username, false otherwise.
      */
@@ -167,11 +167,11 @@ public class FileHelper {
         
         String[] publicList = new File(getBaseDirectory() + "public").list();
         String[] privateList = new File(getBaseDirectory() + "private").list();
-        
+                
         List<String> allFileNames = new ArrayList<>(Arrays.asList(publicList));
         allFileNames.addAll(Arrays.asList(privateList));
         allFileNames.sort(String::compareToIgnoreCase);
-        
+
         for (String name : allFileNames) {
             if (pattern.matcher(name).matches()) {
                 return true;
@@ -181,6 +181,13 @@ public class FileHelper {
         return false;
     }
     
+    /**
+     * Read the specified type of user key from the file contents.
+     * @param userFile The file which needs to be read.
+     * @param keyType Specifies if the key returned should be PublicKey or PrivateKey.
+     * @return UserKey of the specified publicity class if the file content is as expected, null otherwise.
+     * @throws IOException If something goes wrong when reading the file. 
+     */
     public UserKey getKeyFromFile(File userFile, String keyType) throws IOException {
         try (BufferedReader buffer = new BufferedReader(new FileReader(userFile))) {
             String line;
@@ -201,7 +208,7 @@ public class FileHelper {
                             break;
                     }
                 } else {
-                    System.out.println("Expected two elements in the file, found " + elements.length + ".");
+                    throw new IllegalArgumentException("Expected two elements in the file, found " + elements.length + ".");
                 }
             }
         } catch (IOException e) {

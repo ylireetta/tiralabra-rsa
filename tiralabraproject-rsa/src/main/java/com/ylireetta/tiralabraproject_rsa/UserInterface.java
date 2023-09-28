@@ -114,10 +114,9 @@ public class UserInterface {
     /**
      * Encrypt a message for a specific recipient using their public key.
      * @param scanner The scanner used to read user input in the UserInterface class.
+     * @param encrypt True if the user wants to encrypt a message, false if they want to decrypt.
      */
     private void handleMessage(Scanner scanner, boolean encrypt) {
-        // There is a bug in here somewhere, or perhaps it's in the key generation. Keys for reetta and iuiu work, but new keys give utter gibberish when decrypting message.
-        
         // Give the boolean as the opposite. If we are encrypting a message, we need to ask for the recipient name, not the user's own name.
         String username = validateUsername(scanner, !encrypt);
         
@@ -126,14 +125,14 @@ public class UserInterface {
             if (message != null && encrypt) {
                 try {
                     BigInteger encryptedMessage = encryptionHelper.encryptMessage(username, message);
-                    System.out.println("Encrypted message " + message + ": result is\n\n" + encryptedMessage);
+                    System.out.println("Encrypted message " + message + ": result is\n" + encryptedMessage);
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
             } else if (message != null && !encrypt) {
                 try {
                     String decryptedMessage = decryptionHelper.decryptMessage(username, message);
-                    System.out.println("Decryption result: " + decryptedMessage);
+                    System.out.println("Decryption result:\n" + decryptedMessage);
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
