@@ -7,19 +7,26 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 public class DecryptionHelper {
-    private FileHelper fileHelper;
+    private final FileHelper fileHelper;
     
     public DecryptionHelper(FileHelper fileHelper) {
         this.fileHelper = fileHelper;
     }
     
-    public String decryptMessage(String username, String message) throws IOException {
-        // The message is still a String. Convert to BigInteger.
-        BigInteger encryptedMessage = new BigInteger(message);
-        
+    /**
+     * 
+     * @param username
+     * @param message
+     * @return
+     * @throws IOException 
+     */
+    public String decryptMessage(String username, String message) throws IOException {        
         File privateKeyFile = fileHelper.retrieveUserFile(username, "private");
         
         if (privateKeyFile != null) {
+            // The message is still a String. Convert to BigInteger.
+            BigInteger encryptedMessage = new BigInteger(message);
+            
             try {
                 UserKey privateKey = fileHelper.getKeyFromFile(privateKeyFile, "private");
                 BigInteger d = privateKey.getExponent();
@@ -36,7 +43,6 @@ public class DecryptionHelper {
         } else {
             // The private key was not found, there's nothing we can do now. We have handled this situation in the UI already, but just in case.
             throw new FileNotFoundException("No private key file for user " + username + " was found. Cannot decrypt message.");
-            
         }
     }
     
