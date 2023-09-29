@@ -47,6 +47,13 @@ public class PrimeHelperTest {
             Assertions.assertFalse(PrimeHelper.isPrime(composite));
         }
     }
+    
+    @Test
+    public void specialCasesAreDetected() {
+        // If n is smaller than 2 or n is even, it cannot be prime.
+        Assertions.assertFalse(PrimeHelper.isPrime(BigInteger.ONE));
+        Assertions.assertFalse(PrimeHelper.isPrime(new BigInteger("4125636888562548868221559797461450")));
+    }
         
     @Test
     public void extendedEuclideanWithBigIntegers() {
@@ -65,6 +72,16 @@ public class PrimeHelperTest {
     }
     
     @Test
+    public void millerRabinWithBigPrime() {
+        BigInteger a = new BigInteger("4125636888562548868221559797461449"); // Pell prime from Wikipedia
+        
+        BigInteger d = new BigInteger("515704611070318608527694974682681");
+        BigInteger witness = new BigInteger("2681381924148598885035133075237174");
+        
+        Assertions.assertTrue(PrimeHelper.millerRabinTest(witness, d, a));
+    }
+    
+    @Test
     public void millerRabinWithBigComposite() {
         // Test by creating two LARGE primes (google) as BigIntegers. Multiply them --> not prime anymore.
         // MillerRabin should return false.
@@ -79,20 +96,11 @@ public class PrimeHelperTest {
     }
     
     @Test
-    public void millerRabinWithBigPrime() {
-        BigInteger a = new BigInteger("4125636888562548868221559797461449"); // Pell prime from Wikipedia
-        
-        BigInteger d = new BigInteger("515704611070318608527694974682681");
-        BigInteger witness = new BigInteger("2681381924148598885035133075237174");
-        
-        Assertions.assertTrue(PrimeHelper.millerRabinTest(witness, d, a));
-    }
-    
-    @Test
     public void randomWitnessesGeneration() {
         BigInteger n = new BigInteger("123456789123456789123456789");
         BigInteger[] witnesses = PrimeHelper.randomWitnesses(n, 10);
         
+        // Random witnesses should be coprime to n, i.e. their greatest common divisor should be one.
         for (BigInteger witness: witnesses) {
             BigInteger gcd = n.gcd(witness);
             Assertions.assertEquals(BigInteger.ONE, gcd);
@@ -147,7 +155,35 @@ public class PrimeHelperTest {
     }
     
     @Test
-    public void squaredPowerModCheckTest() {
-        // TODO
+    public void divisibleBySmallPrimeReturnsFalseWhenNumberEqualToSmallPrime() {
+        BigInteger smallPrime = new BigInteger("1223");
+        
+        Assertions.assertFalse(PrimeHelper.divisibleBySmallPrime(smallPrime));
+    }
+    
+    @Test
+    public void squaredPowerModCheckReturnsTrueForPrime() {
+        BigInteger n = new BigInteger("43143988327398957279342419750374600193");
+        BigInteger d = new BigInteger("84265602201951088436215663574950391");
+        BigInteger x = new BigInteger("3908927894399109034346774427403528617");
+        
+        // Check that n should pass the actual test as well.
+        Assertions.assertTrue(n.isProbablePrime(95));
+        
+        boolean result = PrimeHelper.squaredPowerModCheck(d, n, x);
+        Assertions.assertTrue(result);
+    }
+    
+    @Test
+    public void squaredPowerModCheckReturnsFalseForComposite() {
+        BigInteger n = new BigInteger("98061198362285355506912246248528643516863228716807945791912463329741");
+        BigInteger d = new BigInteger("24515299590571338876728061562132160879215807179201986447978115832435");
+        BigInteger x = new BigInteger("93192721297752240027978590327040280545161360686900864308702777474979");
+        
+        // Check that n should not pass the actual test.
+        Assertions.assertFalse(n.isProbablePrime(95));
+        
+        boolean result = PrimeHelper.squaredPowerModCheck(d, n, x);
+        Assertions.assertFalse(result);
     }
 }

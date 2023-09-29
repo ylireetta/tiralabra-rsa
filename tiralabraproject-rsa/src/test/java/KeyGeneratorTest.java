@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KeyGeneratorTest {
-    KeyGenerator generator = new KeyGenerator();
+    private KeyGenerator generator = new KeyGenerator();
     
     @Test
     public void keysGetGenerated() {

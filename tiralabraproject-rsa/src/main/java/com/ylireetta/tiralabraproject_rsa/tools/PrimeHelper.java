@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Random;
 
 public class PrimeHelper {
-    public static final List<BigInteger> SMALLPRIMES = sieveOfEratosthenes();
+    private static final List<BigInteger> SMALLPRIMES = sieveOfEratosthenes();
     
     /**
-     * Generate a prime number.
-     * @return A prime number.
+     * Generate a likely prime number.
+     * @return A likely prime number.
      */
     public static BigInteger generatePrime() {
         BigInteger primeCandidate = new BigInteger(1000, new Random());
@@ -42,11 +42,11 @@ public class PrimeHelper {
         BigInteger[] resultArray = factorizePowerTwo(n);
         BigInteger d = resultArray[1];
         
-        // Choice of k: a larger value provides more accuracy, but requires more calculation effort.
+        // Choice of k: a larger value provides more accuracy, but requires more calculation effort. k is 40 here.
         BigInteger[] randomWitnesses = randomWitnesses(n, 40);
         
         for (int i = 0; i < randomWitnesses.length; i++) {
-            // If this test passes for each a in random witnesses, n is likely prime.
+            // If this test passes for each a in random witnesses, n is a likely prime.
             // If it fails, n is composite and of no longer interest to us.
             if (!millerRabinTest(randomWitnesses[i], d, n)) {
                 return false;
@@ -76,7 +76,7 @@ public class PrimeHelper {
     }
     
     /**
-     * 
+     * Generate random witnesses with which the Miller-Rabin test will be run.
      * @param n Number to test.
      * @param k Number of random witnesses to generate.
      * @return An array with k random witnesses.
@@ -139,7 +139,7 @@ public class PrimeHelper {
      * @param a Random witness against which the test is made.
      * @param d The remainder d calculated when (n - 1) was written as 2^r * d.
      * @param n The number under test.
-     * @return Whether n is a likely prime or not.
+     * @return True if n is a likely prime, false if n is definitely composite.
      */
     public static boolean millerRabinTest(BigInteger a, BigInteger d, BigInteger n) {
         BigInteger result = modularExponentiation(a, d, n);

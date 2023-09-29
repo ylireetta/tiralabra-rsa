@@ -34,7 +34,7 @@ public class DecryptionHelper {
                 throw e;
             }
         } else {
-            // The private key was not found, there's nothing we can do now.
+            // The private key was not found, there's nothing we can do now. We have handled this situation in the UI already, but just in case.
             throw new FileNotFoundException("No private key file for user " + username + " was found. Cannot decrypt message.");
             
         }

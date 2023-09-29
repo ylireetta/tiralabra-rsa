@@ -53,7 +53,7 @@ public class FileHelperTest {
     }
     
     @Test
-    public void fileAlreadyExists() throws IOException {
+    public void writeKeysDoesNotCreateDuplicateFiles() throws IOException {
         boolean firstResult = fileHelper.writeKeys("testuser");
         boolean secondResult = fileHelper.writeKeys("testuser");
         
@@ -78,7 +78,7 @@ public class FileHelperTest {
     }
     
     @Test
-    public void readFileIsUnsuccessful() {
+    public void readFileThrowsExceptionIfFileNotFound() {
         assertThrows(FileNotFoundException.class, () -> fileHelper.readFromFile("testuser"));
     }
     
@@ -94,7 +94,7 @@ public class FileHelperTest {
     }
     
     @Test
-    public void retrieveUserFileIfUserExists() throws IOException {
+    public void retrieveUserFileReturnsFileIfUserExists() throws IOException {
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
         
@@ -102,7 +102,7 @@ public class FileHelperTest {
     }
     
     @Test
-    public void retrieveUserFileIfUserNotFound() throws IOException {
+    public void retrieveUserFileReturnsNullIfUserNotFound() throws IOException {
         // Create a file for another user.
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
@@ -141,7 +141,7 @@ public class FileHelperTest {
     }
     
     @Test
-    public void getKeyFromFileWithInvalidKeyTypeReturnsNull() throws IOException {
+    public void getKeyFromFileWithInvalidKeyTypeThrowsException() throws IOException {
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
         
@@ -149,6 +149,15 @@ public class FileHelperTest {
         String content = "123456789,987654321";
         Files.write(publicFile.toPath(), content.getBytes());
         
-        assertNull(fileHelper.getKeyFromFile(publicFile, "invalid"));
+        assertThrows(IllegalArgumentException.class, () -> fileHelper.getKeyFromFile(publicFile, "invalid"));
+    }
+    
+    @Test
+    public void getKeyFromFileReturnsNullIfFileEmpty() throws IOException {
+        File publicFile = new File(tempDir.toString() + "/" + publicFileName);
+        publicFile.createNewFile();
+        
+        assertNull(fileHelper.getKeyFromFile(publicFile, "public"));
+        
     }
 }

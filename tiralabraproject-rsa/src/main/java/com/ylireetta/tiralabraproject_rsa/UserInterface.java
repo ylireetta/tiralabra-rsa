@@ -112,7 +112,7 @@ public class UserInterface {
     }
     
     /**
-     * Encrypt a message for a specific recipient using their public key.
+     * Encrypt or decrypt a message.
      * @param scanner The scanner used to read user input in the UserInterface class.
      * @param encrypt True if the user wants to encrypt a message, false if they want to decrypt.
      */
@@ -120,22 +120,12 @@ public class UserInterface {
         // Give the boolean as the opposite. If we are encrypting a message, we need to ask for the recipient name, not the user's own name.
         String username = validateUsername(scanner, !encrypt);
         
-        if (username != null) {
-            String message = getMessage(scanner);
+        if (username != null && keyFileExists(username, encrypt)) {
+            String message = getMessage(scanner, encrypt);
             if (message != null && encrypt) {
-                try {
-                    BigInteger encryptedMessage = encryptionHelper.encryptMessage(username, message);
-                    System.out.println("Encrypted message " + message + ": result is\n" + encryptedMessage);
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
+                handleEncryption(message, username);
             } else if (message != null && !encrypt) {
-                try {
-                    String decryptedMessage = decryptionHelper.decryptMessage(username, message);
-                    System.out.println("Decryption result:\n" + decryptedMessage);
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
+                handleDecryption(message, username);
             }
         } else {
             // Something was wrong with the recipient username.
@@ -145,19 +135,83 @@ public class UserInterface {
     /**
      * Ask for the message to encrypt or decrypt.
      * @param scanner The scanner used to read user input in the UserInterface class.
-     * @return The message from the user if not empty, null otherwise.
+     * @param encrypt Whether the message should be encrypted or decrypted.
+     * @return The message from the user if not empty and of correct format, null otherwise. 
      */
-    private String getMessage(Scanner scanner) {
+    private String getMessage(Scanner scanner, boolean encrypt) {
         System.out.println("Please write your message here:");
         
         String message = scanner.nextLine();
         System.out.println("");
         
+        // Special case when the message should be decrypted in the next stage.
+        if (!encrypt && !message.matches("[0-9]+")) {
+            System.out.println("Message to decrypt can only contain numbers.");
+            return null;
+        }
+        
+        // Other cases.
         if (!message.isEmpty()) {
             return message;
         } else {
             System.out.println("Message cannot be empty.");
         }
         return null;
+    }
+    
+    /**
+     * Check whether key files exist for the given user.
+     * If not and the user wants to encrypt, create files on the fly. If no files exist and the user wants to decrypt, inform them and return.
+     * @param username The user whose key files need to be checked.
+     * @param encrypt Whether the situation calls for encrypting or decrypting a message.
+     * @return True if files were found to start with or successfully created in the process. False if the user wants to decrypt a message and no key files are found.
+     */
+    private boolean keyFileExists(String username, boolean encrypt) {
+        if (encrypt && !fileHelper.usernameTaken(username)) {
+            // Create key files if none exist for the current user. This should only be done when encrypting.
+            try {
+                fileHelper.writeKeys(username);
+                return true;
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
+        }
+        
+        // If no files are found when decryption should be done, there's nothing we can do.
+        if (!encrypt && !fileHelper.usernameTaken(username)) {
+            System.out.println("No key files found for user " + username + ". Cannot decrypt message.");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Encrypt a message for a specific recipient using their public key.
+     * @param message The message to encrypt.
+     * @param username The user whose public key should be used.
+     */
+    private void handleEncryption(String message, String username) {
+        try {
+            BigInteger encryptedMessage = encryptionHelper.encryptMessage(username, message);
+            System.out.println("Encrypted message " + message + ": result is\n" + encryptedMessage);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /**
+     * 
+     * @param message
+     * @param username 
+     */
+    private void handleDecryption(String message, String username) {
+        try {
+            String decryptedMessage = decryptionHelper.decryptMessage(username, message);
+            System.out.println("Decryption result:\n" + decryptedMessage);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

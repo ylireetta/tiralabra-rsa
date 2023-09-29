@@ -204,8 +204,7 @@ public class FileHelper {
                         case "private":
                             return new PrivateKey(exponent, n);
                         default:
-                            System.out.println("Invalid key type.");
-                            break;
+                            throw new IllegalArgumentException("Invalid key type.");
                     }
                 } else {
                     throw new IllegalArgumentException("Expected two elements in the file, found " + elements.length + ".");
