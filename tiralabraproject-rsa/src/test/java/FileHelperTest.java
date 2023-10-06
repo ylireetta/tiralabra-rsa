@@ -1,3 +1,4 @@
+import com.ylireetta.tiralabraproject_rsa.PublicKey;
 import com.ylireetta.tiralabraproject_rsa.UserKey;
 import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
 import java.io.File;
@@ -62,6 +63,35 @@ public class FileHelperTest {
     }
     
     @Test
+    public void writeToFileReturnsTrueIfSuccessful() throws IOException {
+        UserKey key = new PublicKey(BigInteger.TEN, BigInteger.TWO);
+        assertTrue(fileHelper.writeToFile("public", "someUser", key));
+    }
+    
+    @Test
+    public void writeToFileReturnsFalseIfNotSuccessful() throws IOException {
+        // writeToFile calls createFile which returns false if a file with the same name already exists. Create a file first so that createFile returns false later.
+        String newFileName = "public/someUser_public_key.txt";
+        UserKey key = new PublicKey(BigInteger.TEN, BigInteger.TWO);
+        File publicFile = new File(tempDir.toString() + "/" + newFileName);
+        publicFile.createNewFile();
+        
+        assertFalse(fileHelper.writeToFile("public", "someUser", key));
+    }
+    
+    @Test
+    public void createFileCreatesFileWhenUsernameIsLowerCase() {
+        String completeFileName = tempDir.toString() + "/" + publicFileName;
+        assertTrue(fileHelper.createFile(completeFileName));
+    }
+    
+    @Test
+    public void createFileCreatesFileWhenUsernameContainsCapitalLetters() {
+        String fileName = tempDir.toString() + "/" + "public/HereWeHaveCaPiTaL_public_key.txt";
+        assertTrue(fileHelper.createFile(fileName));
+    }
+    
+    @Test
     public void readFileIsSuccessful() throws IOException {
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
@@ -83,17 +113,6 @@ public class FileHelperTest {
     }
     
     @Test
-    public void usernameTakenChangesValue() throws IOException {
-        assertFalse(fileHelper.usernameTaken("testuser"));
-        
-        File publicFile = new File(tempDir.toString() + "/" + publicFileName);
-        publicFile.createNewFile();
-        
-        assertTrue(fileHelper.usernameTaken("testuser"));
-        assertFalse(fileHelper.usernameTaken("anotheruser"));
-    }
-    
-    @Test
     public void retrieveUserFileReturnsFileIfUserExists() throws IOException {
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
@@ -108,6 +127,17 @@ public class FileHelperTest {
         publicFile.createNewFile();
         
         assertNull(fileHelper.retrieveUserFile("nonexistent", "public"));
+    }
+    
+    @Test
+    public void usernameTakenChangesValue() throws IOException {
+        assertFalse(fileHelper.usernameTaken("testuser"));
+        
+        File publicFile = new File(tempDir.toString() + "/" + publicFileName);
+        publicFile.createNewFile();
+        
+        assertTrue(fileHelper.usernameTaken("testuser"));
+        assertFalse(fileHelper.usernameTaken("anotheruser"));
     }
     
     @Test
@@ -158,6 +188,5 @@ public class FileHelperTest {
         publicFile.createNewFile();
         
         assertNull(fileHelper.getKeyFromFile(publicFile, "public"));
-        
     }
 }

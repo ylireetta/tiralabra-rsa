@@ -70,7 +70,7 @@ public class FileHelper {
      * @throws IOException 
      */
     public boolean writeToFile(String keyType, String username, UserKey key) throws IOException {
-        String filePath = getBaseDirectory() + "/" + keyType + "/";
+        String filePath = getBaseDirectory() + keyType + "/";
         String fileName = username + "_" + keyType + "_key.txt";
         String completeName = filePath + fileName;
         
