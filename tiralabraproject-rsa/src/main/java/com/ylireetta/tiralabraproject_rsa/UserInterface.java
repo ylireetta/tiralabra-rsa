@@ -92,7 +92,7 @@ public class UserInterface {
      * Ask for and validate username.
      * @param scanner The scanner used to read user input in the UserInterface class.
      * @param ownName True if the user should provide their own username, false if the username belongs to the message recipient.
-     * @return The given username if valid, null otherwise. 
+     * @return The given username in lowercase if valid, null otherwise. 
      */
     private String validateUsername(Scanner scanner, boolean ownName) {
         if (ownName) {
@@ -104,7 +104,7 @@ public class UserInterface {
         System.out.println("");
         
         if (!username.isEmpty() && !username.contains("_")) {
-            return username;
+            return username.toLowerCase();
         } else {
             System.out.println("Username cannot be empty or contain underscores (_).");
             return null;
