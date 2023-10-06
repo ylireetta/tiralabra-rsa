@@ -5,7 +5,7 @@
 - [Weekly report 2](./documentation/weeklyreport2.md "Weekly report 2")
 - [Weekly report 3](./documentation/weeklyreport3.md "Weekly report 3")
 - [Weekly report 4](./documentation/weeklyreport4.md "Weekly report 4")
-- Week 5
+- [Weekly report 5](./documentation/weeklyreport5.md "Weekly report 5")
 - Week 6
 
 ## How to run the program
