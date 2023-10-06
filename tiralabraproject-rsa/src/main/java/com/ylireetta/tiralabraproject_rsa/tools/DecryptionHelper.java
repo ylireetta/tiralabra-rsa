@@ -14,10 +14,10 @@ public class DecryptionHelper {
     }
     
     /**
-     * 
-     * @param username
-     * @param message
-     * @return
+     * Decrypt the given string using the private key of the specified user.
+     * @param username The user whose private key should be used for decryption.
+     * @param message The message to decrypt.
+     * @return The decrypted message.
      * @throws IOException 
      */
     public String decryptMessage(String username, String message) throws IOException {        
@@ -41,7 +41,7 @@ public class DecryptionHelper {
                 throw e;
             }
         } else {
-            // The private key was not found, there's nothing we can do now. We have handled this situation in the UI already, but just in case.
+            // The private key was not found, there's nothing we can do now.
             throw new FileNotFoundException("No private key file for user " + username + " was found. Cannot decrypt message.");
         }
     }

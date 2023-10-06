@@ -202,9 +202,9 @@ public class UserInterface {
     }
     
     /**
-     * 
-     * @param message
-     * @param username 
+     * Decrypt a message using the private key of the user.
+     * @param message The message to decrypt.
+     * @param username The user whose private key should be used.
      */
     private void handleDecryption(String message, String username) {
         try {

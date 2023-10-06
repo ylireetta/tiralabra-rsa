@@ -40,7 +40,7 @@ public class EncryptionHelper {
                 throw e;
             }
         } else {
-            // The public key was not found. We should never end up here since files were created in the UI if they were missing to begin with, but just in case.
+            // The public key was not found.
             throw new FileNotFoundException("No public key file for user " + recipient + " was found. Cannot encrypt message.");
         }
         

@@ -57,7 +57,7 @@ public class PrimeHelper {
     }
     
     /**
-     * Write n - 1 as 2^r * d
+     * Write n - 1 as 2^r * d.
      * @param n The prime candidate under test.
      * @return An array with values r and d.
      */
@@ -135,7 +135,7 @@ public class PrimeHelper {
     }
     
     /**
-     * https://www.geeksforgeeks.org/primality-test-set-3-miller-rabin/
+     * Run checks to determine whether the number under test is a probable prime.
      * @param a Random witness against which the test is made.
      * @param d The remainder d calculated when (n - 1) was written as 2^r * d.
      * @param n The number under test.
