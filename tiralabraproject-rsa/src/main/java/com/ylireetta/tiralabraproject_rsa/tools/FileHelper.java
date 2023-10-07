@@ -119,11 +119,10 @@ public class FileHelper {
         
         for (String keyType : keyTypes) {
             File userFile = retrieveUserFile(lowerCase, keyType);
-        
+            
             if (userFile != null) {
                 UserKey key = getKeyFromFile(userFile, keyType);
                 System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
-                
             } else {
                 missingFiles++;
             }
@@ -217,4 +216,41 @@ public class FileHelper {
         return null;
     }
     
+    /**
+     * 
+     * @param fileList
+     * @param username
+     * @param keyType
+     * @return 
+     */
+    public int binarySearch(File[] fileList, String username, String keyType) {
+        // Match the first part of the file name, up until the first underscore.
+        String regex = "^" + Pattern.quote(username) + "_.*$";
+        Pattern pattern = Pattern.compile(regex);
+        
+        int low = 0, middle = 0;
+        int high = fileList.length - 1;
+                
+        while (low <= high) {
+            middle = low + ((high - low) / 2);
+            String userFileName = fileList[middle].getName();
+            
+            // Found a file name that matches the username.
+            if (pattern.matcher(userFileName).matches()) {
+                return middle;
+            } else {
+                // Fiddle around with the indexes and continue the loop.
+                if (userFileName.compareTo(username) < 0) {
+                    // The file name we are looking for is located to the right of our mid value.
+                    low = middle + 1;
+                } else if (userFileName.compareTo(username) > 0) {
+                    // The file name we are looking for is located to the left of our mid value.
+                    high = middle - 1;
+                }
+            }
+        }
+        
+        // The file was not found.
+        return -1;
+    }
 }

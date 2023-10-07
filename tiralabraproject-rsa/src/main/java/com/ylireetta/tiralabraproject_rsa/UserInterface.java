@@ -57,13 +57,15 @@ public class UserInterface {
     private void writeUserKeys(Scanner scanner) {
         String username = validateUsername(scanner, true);
         
-        if (fileHelper.usernameTaken(username)) {
-            System.out.println("Username already taken.");
-        } else if (username != null) {
-            try {
-                fileHelper.writeKeys(username);
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
+        if (username != null) {
+            if (fileHelper.usernameTaken(username)) {
+                System.out.println("Username already taken.");
+            } else if (username != null) {
+                try {
+                    fileHelper.writeKeys(username);
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
