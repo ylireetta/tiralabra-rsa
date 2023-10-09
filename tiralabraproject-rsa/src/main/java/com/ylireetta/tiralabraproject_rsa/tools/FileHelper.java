@@ -62,7 +62,7 @@ public class FileHelper {
     }
     
     /**
-     * 
+     * Create a new user key file and write a user key into it.
      * @param keyType The key type to use as part of the file names.
      * @param username The user whose username will be used in the file names.
      * @param key The key whose value will be written in the file.
@@ -217,13 +217,12 @@ public class FileHelper {
     }
     
     /**
-     * 
-     * @param fileList
-     * @param username
-     * @param keyType
-     * @return 
+     * Use binary search to look for the key file of a specific user in a list of files.
+     * @param fileList The collection of files to search through.
+     * @param username The username of the user whose file to look for.
+     * @return The index of the file in the list if found, -1 otherwise.
      */
-    public int binarySearch(File[] fileList, String username, String keyType) {
+    public int binarySearch(File[] fileList, String username) {
         // Match the first part of the file name, up until the first underscore.
         String regex = "^" + Pattern.quote(username) + "_.*$";
         Pattern pattern = Pattern.compile(regex);

@@ -25,11 +25,19 @@ public class KeyGenerator {
         return keys;
     }
     
+    /**
+     * Set the private variable PublicKey and add the key to the list of UserKey objects.
+     * @param key The key to set.
+     */
     public void setPublicKey(PublicKey key) {
         this.publicKey = key;
         this.keys.add(key); // TODO: make sure that there is only one public key in the list.
     }
     
+    /**
+     * Set the private variable PrivateKey and add the key to the list of UserKey objects.
+     * @param key The key to set.
+     */
     public void setPrivateKey(PrivateKey key) {
         this.privateKey = key;
         this.keys.add(key); // TODO: make sure that there is only one private key in the list.
@@ -66,20 +74,42 @@ public class KeyGenerator {
         
         BigInteger n = p.multiply(q);
         
+        PublicKey publicKey = createPublicKey(n);
+        setPublicKey(publicKey);
+        
+        BigInteger publicExponent = publicKey.getExponent();
+        PrivateKey privateKey = createPrivateKey(p, q, publicExponent, n);
+        
+        if (privateKey != null) {
+            setPrivateKey(privateKey);
+        }
+    }
+    
+    /**
+     * Generate a public key to use for encryption.
+     * @param n The result of multiplying p by q.
+     * @return A new PublicKey.
+     */
+    public PublicKey createPublicKey(BigInteger n) {
         /* Choose a number e:
-        e < n
-        n is relatively prime to (p - 1) * (q - 1)
-        e and (p - 1) * (q - 1) have no common factor except 1 (this gets tested when the extended euclidean algorithm is run)
-        φ(n) (Euler's totient function) as φ(n) = (p - 1) * (q - 1)
-        So e needs to be smaller than φ(n) and bigger than 1
-        e is coprime to φ(n)
+        e and (p - 1) * (q - 1) have no common factor except 1 (this gets tested when the extended euclidean algorithm is run). i.e., e is coprime to φ(n)
         The most common choice for 'e' is 65537.
         */
-        
-        // Euler's totient function
-        BigInteger euler = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
         BigInteger publicExponent = new BigInteger("65537");
-        
+        return new PublicKey(publicExponent, n);
+    }
+    
+    /**
+     * Generate a private key to use for decryption.
+     * @param p (Probable) prime number.
+     * @param q (Probable) prime number.
+     * @param publicExponent Public exponent from the public key.
+     * @param n The result of multiplying p by q.
+     * @return A new PrivateKey if the greatest common divisor of the public exponent and Euler's totient function is equal to one, null otherwise.
+     */
+    public PrivateKey createPrivateKey(BigInteger p, BigInteger q, BigInteger publicExponent, BigInteger n) {
+        // φ(n) (Euler's totient function) as φ(n) = (p - 1) * (q - 1)
+        BigInteger euler = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
         BigInteger[] extendedEuclideanResult = PrimeHelper.extendedEuclidean(publicExponent, euler);
         BigInteger greatestCommonDivisor = extendedEuclideanResult[0];
         
@@ -94,10 +124,10 @@ public class KeyGenerator {
             }
             
             // Now we have the private exponent of the private key (i.e., d).
-            setPublicKey(new PublicKey(publicExponent, n));
-            setPrivateKey(new PrivateKey(privateExponent, n));
+            return new PrivateKey(privateExponent, n);
         } else {
-            // TODO: do something in case gcd was not 1.
+            // gcd was not 1, return null.
+            return null;
         }
     }
 }

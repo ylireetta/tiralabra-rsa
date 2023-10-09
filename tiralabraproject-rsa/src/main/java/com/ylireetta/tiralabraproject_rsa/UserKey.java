@@ -3,6 +3,10 @@ package com.ylireetta.tiralabraproject_rsa;
 import java.math.BigInteger;
 
 public interface UserKey {
+    /**
+     * Get the type of the user key.
+     * @return "public" or "private", depending on the type of the key.
+     */
     public String getType();
     
     /**

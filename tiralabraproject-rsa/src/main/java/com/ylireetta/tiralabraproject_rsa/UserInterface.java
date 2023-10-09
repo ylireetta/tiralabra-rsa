@@ -129,8 +129,6 @@ public class UserInterface {
             } else if (message != null && !encrypt) {
                 handleDecryption(message, username);
             }
-        } else {
-            // Something was wrong with the recipient username.
         }
     }
     
