@@ -241,10 +241,10 @@ public class FileHelper {
                 return middle;
             } else {
                 // Fiddle around with the indexes and continue the loop.
-                if (userFileName.compareTo(username) < 0) {
+                if (nameStart.compareTo(username) < 0) {
                     // The file name we are looking for is located to the right of our mid value.
                     low = middle + 1;
-                } else if (userFileName.compareTo(username) > 0) {
+                } else if (nameStart.compareTo(username) > 0) {
                     // The file name we are looking for is located to the left of our mid value.
                     high = middle - 1;
                 }
