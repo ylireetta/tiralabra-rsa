@@ -1,5 +1,6 @@
 import com.ylireetta.tiralabraproject_rsa.PublicKey;
 import com.ylireetta.tiralabraproject_rsa.UserKey;
+import com.ylireetta.tiralabraproject_rsa.tools.CustomFileComparator;
 import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -188,5 +190,61 @@ public class FileHelperTest {
         publicFile.createNewFile();
         
         assertNull(fileHelper.getKeyFromFile(publicFile, "public"));
+    }
+    
+    @Test
+    public void binarySearchReturnsExpectedOrder() {
+        File[] files = createTestFileArray();
+        Arrays.sort(files);
+        
+        int firstIndexBeforeComparator = fileHelper.binarySearch(files, "reetta");
+        
+        // After initial sort, the username is not found at all.
+        assertEquals(-1, firstIndexBeforeComparator);
+        
+        Arrays.sort(files, new CustomFileComparator());
+        
+        int smallerIndex = fileHelper.binarySearch(files, "reetta");
+        int biggerIndex = fileHelper.binarySearch(files, "reetta6");
+        
+        assertTrue(smallerIndex < biggerIndex);        
+    }
+    
+    @Test
+    public void binarySearchReturnsExpectedIfFileNotFound() {
+        File[] files = createTestFileArray();
+        Arrays.sort(files, new CustomFileComparator());
+        
+        assertEquals(-1, fileHelper.binarySearch(files, "testnamenotfound"));
+    }
+    
+    /**
+     * Create an array of files for binary search tests.
+     * @return An array of files with suitable file names.
+     */
+    private File[] createTestFileArray() {
+        String[] fileNames = new String[]{
+            "ällömöllö_private_key.txt",
+            "testfile605_private_key.txt",
+            "first_private_key.txt",
+            "testfile_private_key.txt",
+            "testfile1_private_key.txt",
+            "45file_private_key.txt",
+            "tttttest_private_key.txt",
+            "test_private_key.txt",
+            "abcd_private_key.txt",
+            "reetta6_private_key.txt",
+            "reetta5_private_key.txt",
+            "reetta_private_key.txt",
+            "reettax_private_key.txt"
+        };
+        
+        File[] files = new File[fileNames.length];
+        
+        for (int i = 0; i < files.length; i++) {
+            files[i] = new File(tempDir.toString(), fileNames[i]);
+        }
+        
+        return files;
     }
 }

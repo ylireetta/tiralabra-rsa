@@ -118,11 +118,16 @@ public class FileHelper {
         int missingFiles = 0;
         
         for (String keyType : keyTypes) {
-            File userFile = retrieveUserFile(lowerCase, keyType);
+            File[] fileList = new File(getBaseDirectory() + "/" + keyType).listFiles();
+            Arrays.sort(fileList, new CustomFileComparator());
             
-            if (userFile != null) {
-                UserKey key = getKeyFromFile(userFile, keyType);
-                System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
+            int userFileIndex = binarySearch(fileList, lowerCase);
+            if (userFileIndex > -1) {
+                File userFile = fileList[userFileIndex];
+                if (userFile != null) {
+                    UserKey key = getKeyFromFile(userFile, keyType);
+                    System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
+                }
             } else {
                 missingFiles++;
             }
@@ -223,19 +228,16 @@ public class FileHelper {
      * @return The index of the file in the list if found, -1 otherwise.
      */
     public int binarySearch(File[] fileList, String username) {
-        // Match the first part of the file name, up until the first underscore.
-        String regex = "^" + Pattern.quote(username) + "_.*$";
-        Pattern pattern = Pattern.compile(regex);
-        
         int low = 0, middle = 0;
         int high = fileList.length - 1;
-                
+                        
         while (low <= high) {
             middle = low + ((high - low) / 2);
             String userFileName = fileList[middle].getName();
+            String nameStart = CustomFileComparator.getNameStart(userFileName);
             
             // Found a file name that matches the username.
-            if (pattern.matcher(userFileName).matches()) {
+            if (nameStart.equals(username)) {
                 return middle;
             } else {
                 // Fiddle around with the indexes and continue the loop.
