@@ -3,6 +3,9 @@ package com.ylireetta.tiralabraproject_rsa;
 import com.ylireetta.tiralabraproject_rsa.tools.DecryptionHelper;
 import com.ylireetta.tiralabraproject_rsa.tools.EncryptionHelper;
 import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -196,6 +199,7 @@ public class UserInterface {
         try {
             BigInteger encryptedMessage = encryptionHelper.encryptMessage(username, message);
             System.out.println("Encrypted message " + message + ": result is\n" + encryptedMessage);
+            copyMessageToClipboard(encryptedMessage.toString());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -213,5 +217,17 @@ public class UserInterface {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    /**
+     * Copy the message to clipboard so that the user doesn't have to do that themselves.
+     * @param message The message to copy.
+     */
+    private void copyMessageToClipboard(String message) {
+        StringSelection selection = new StringSelection(message);
+        Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clip.setContents(selection, selection);
+        
+        System.out.println("\nThe message has been copied to your clipboard for convenience.");
     }
 }

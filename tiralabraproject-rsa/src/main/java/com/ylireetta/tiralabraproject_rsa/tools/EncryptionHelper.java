@@ -35,7 +35,6 @@ public class EncryptionHelper {
 
                 BigInteger encryptedMessage = PrimeHelper.modularExponentiation(messageNumeric, e, n);
                 return encryptedMessage;
-
             } catch (IOException e) {
                 throw e;
             }
@@ -43,6 +42,5 @@ public class EncryptionHelper {
             // The public key was not found.
             throw new FileNotFoundException("No public key file for user " + recipient + " was found. Cannot encrypt message.");
         }
-        
     }
 }
