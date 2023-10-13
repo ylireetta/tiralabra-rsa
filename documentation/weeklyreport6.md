@@ -3,4 +3,4 @@ This week has been dedicated to making the binary search work. I had some diffic
 
 I also added a simple functionality that copies the encrypted message to the clipboard. It makes the life of the user a bit easier, because they don't have to copy the encryption result from the command line manually.
 
-NOTE TO SELF: there is still a bug in the binary search algorithm! For example, file name reettaylitalo starts with reetta, which results in the keys of user reetta to be returned. This needs to be fixed.
+I noticed that handling and creating files when running the JAR file would be impossible with the directory structure I had implemented, so I tried another approach. I create the necessary directories in the `FileHelper` constructor, and the directories and files will be located in the same directory where the program is run. It seemed to work when I quickly tested it, but more work needs to be done to ensure that everything goes smoothly.

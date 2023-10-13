@@ -31,7 +31,7 @@ public class KeyGenerator {
      */
     public void setPublicKey(PublicKey key) {
         this.publicKey = key;
-        this.keys.add(key); // TODO: make sure that there is only one public key in the list.
+        this.keys.add(key);
     }
     
     /**
@@ -40,7 +40,7 @@ public class KeyGenerator {
      */
     public void setPrivateKey(PrivateKey key) {
         this.privateKey = key;
-        this.keys.add(key); // TODO: make sure that there is only one private key in the list.
+        this.keys.add(key);
     }
     
     /**

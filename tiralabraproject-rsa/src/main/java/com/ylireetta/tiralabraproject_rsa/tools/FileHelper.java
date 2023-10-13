@@ -24,7 +24,7 @@ public class FileHelper {
      * Constructor for basic usage. Key files get generated in the resources directory. 
      */
     public FileHelper() {
-        this.baseDirectory = "resources/keyfiles/";
+        createDirectoryStructure();
     }
     
     /**
@@ -37,6 +37,28 @@ public class FileHelper {
     
     public String getBaseDirectory() {
         return baseDirectory;
+    }
+    
+    /**
+     * Create the necessary directories to enable file creation in the later stages.
+     */
+    private void createDirectoryStructure() {
+        String currentDir = System.getProperty("user.dir");
+        String basePath = currentDir + File.separator + "resources/keyfiles/";
+        
+        for (String keyType : keyTypes) {
+            String fullPath = basePath + File.separator + keyType;
+
+            // Create directory structure for later use.
+            File directory = new File(fullPath);
+            if (!directory.exists()) {
+                if (directory.mkdirs()) {
+                    this.baseDirectory = fullPath + "/";
+                }
+            }
+        }
+        
+        this.baseDirectory = basePath + "/";
     }
     
     /**
