@@ -1,12 +1,18 @@
 # tiralabra-rsa
 
+## Documentation
+- [Project specification](./documentation/projectspecification.md "Project specification")
+- [User guide](./documentation/userguide.md "User guide")
+- [Implementation report](./documentation/implementation.md "Implementation report")
+- [Testing report](./documentation/testing.md "Testing report")
+
 ## Weekly reports
 - [Weekly report 1](./documentation/weeklyreport1.md "Weekly report 1")
 - [Weekly report 2](./documentation/weeklyreport2.md "Weekly report 2")
 - [Weekly report 3](./documentation/weeklyreport3.md "Weekly report 3")
 - [Weekly report 4](./documentation/weeklyreport4.md "Weekly report 4")
 - [Weekly report 5](./documentation/weeklyreport5.md "Weekly report 5")
-- Week 6
+- [Weekly report 6](./documentation/weeklyreport6.md "Weekly report 6")
 
 ## How to run the program
 All of the following commands should be run in the project root directory (i.e., the directory where the pom.xml file is located).
