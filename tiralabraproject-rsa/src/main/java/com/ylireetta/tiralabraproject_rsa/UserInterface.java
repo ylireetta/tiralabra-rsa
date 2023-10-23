@@ -3,12 +3,14 @@ package com.ylireetta.tiralabraproject_rsa;
 import com.ylireetta.tiralabraproject_rsa.tools.DecryptionHelper;
 import com.ylireetta.tiralabraproject_rsa.tools.EncryptionHelper;
 import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
+import com.ylireetta.tiralabraproject_rsa.tools.KeyGenerator;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -55,7 +57,7 @@ public class UserInterface {
     
     /**
      * Generate new keys for the specified user and write them to files.
-     * @param scanner  The scanner used to read user input in the UserInterface class.
+     * @param scanner The scanner used to read user input in the UserInterface class.
      */
     private void writeUserKeys(Scanner scanner) {
         String username = validateUsername(scanner, true);
@@ -63,12 +65,9 @@ public class UserInterface {
         if (username != null) {
             if (fileHelper.usernameTaken(username)) {
                 System.out.println("Username already taken.");
-            } else if (username != null) {
-                try {
-                    fileHelper.writeKeys(username);
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
+            } else {
+                List<UserKey> keys = generateKeys();
+                writeKeysToFile(username, keys);
             }
         }
     }
@@ -108,10 +107,10 @@ public class UserInterface {
         String username = scanner.nextLine();
         System.out.println("");
         
-        if (!username.isEmpty() && !username.contains("_")) {
+        if (!username.isEmpty() && !username.contains(".")) {
             return username.toLowerCase();
         } else {
-            System.out.println("Username cannot be empty or contain underscores (_).");
+            System.out.println("Username cannot be empty or contain dots (.).");
             return null;
         }
     }
@@ -172,13 +171,9 @@ public class UserInterface {
     private boolean keyFileExists(String username, boolean encrypt) {
         if (encrypt && !fileHelper.usernameTaken(username)) {
             // Create key files if none exist for the current user. This should only be done when encrypting.
-            try {
-                fileHelper.writeKeys(username);
-                return true;
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                return false;
-            }
+            List<UserKey> keys = generateKeys();
+            writeKeysToFile(username, keys);
+            return true;
         }
         
         // If no files are found when decryption should be done, there's nothing we can do.
@@ -229,5 +224,39 @@ public class UserInterface {
         clip.setContents(selection, selection);
         
         System.out.println("\nThe message has been copied to your clipboard for convenience.");
+    }
+    
+    /**
+     * Generate new public and private keys.
+     * @return A list that contains the new UserKeys.
+     */
+    private List<UserKey> generateKeys() {
+        System.out.println("Generating user keys...");
+        return KeyGenerator.generateKeys();
+    }
+    
+    /**
+     * Write the generated UserKeys to new files.
+     * @param username The username to use when creating the file name.
+     * @param keys The list with the UserKeys that should be written to files.
+     */
+    private void writeKeysToFile(String username, List<UserKey> keys) {
+        boolean failed = false;
+        
+        for (UserKey key : keys) {
+            try {
+                if (!fileHelper.writeToFile(username, key)) {
+                    System.out.println("Could not write user keys to file.");
+                    failed = true;
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        
+        if (!failed) {
+            System.out.println("Wrote user keys to file successfully!");
+            System.out.println("The key files can be found under the subdirectories of " + fileHelper.getBaseDirectory() + ".\n");
+        }
     }
 }

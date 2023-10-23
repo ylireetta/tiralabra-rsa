@@ -13,10 +13,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class FileHelper {
-    private final KeyGenerator generator = new KeyGenerator();
     private final ArrayList<String> keyTypes = new ArrayList<>(Arrays.asList("public", "private"));
     private String baseDirectory;
     
@@ -58,42 +56,22 @@ public class FileHelper {
             }
         }
         
-        this.baseDirectory = basePath + "/";
-    }
-    
-    /**
-     * Create public and private keys for the user, and write the keys to their respective files.
-     * @param username The user whose username will be used in the file names.
-     * @return True if both the public and private key files were created successfully, false otherwise.
-     * @throws java.io.IOException 
-     */
-    public boolean writeKeys(String username) throws IOException {
-        generator.generateKeys();
-
-        String lowerCase = username.toLowerCase();
-        int successfulWrites = 0;
-        
-        for (UserKey key : generator.getKeys()) {
-            if (writeToFile(key.getType(), lowerCase, key)) {
-                successfulWrites++;
-            }
-        }
-        
-        // Return true if both file writes were successful.
-        return successfulWrites == 2;
+        this.baseDirectory = basePath;
     }
     
     /**
      * Create a new user key file and write a user key into it.
-     * @param keyType The key type to use as part of the file names.
      * @param username The user whose username will be used in the file names.
      * @param key The key whose value will be written in the file.
      * @return True if file creation and file write was successful, false otherwise.
      * @throws IOException 
      */
-    public boolean writeToFile(String keyType, String username, UserKey key) throws IOException {
+    public boolean writeToFile(String username, UserKey key) throws IOException {
+        String keyType = key.getType();
+        
         String filePath = getBaseDirectory() + keyType + "/";
-        String fileName = username + "_" + keyType + "_key.txt";
+        //String fileName = username + "_" + keyType + "_key.txt";
+        String fileName = username + ".txt";
         String completeName = filePath + fileName;
         
         if (createFile(completeName)) {
@@ -136,20 +114,14 @@ public class FileHelper {
      * @throws IOException 
      */
     public void readFromFile(String username) throws FileNotFoundException, IOException {
-        String lowerCase = username.toLowerCase();
         int missingFiles = 0;
         
         for (String keyType : keyTypes) {
-            File[] fileList = new File(getBaseDirectory() + "/" + keyType).listFiles();
-            Arrays.sort(fileList, new CustomFileComparator());
+            File userFile = retrieveUserFile(username, keyType);
             
-            int userFileIndex = binarySearch(fileList, lowerCase);
-            if (userFileIndex > -1) {
-                File userFile = fileList[userFileIndex];
-                if (userFile != null) {
-                    UserKey key = getKeyFromFile(userFile, keyType);
-                    System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
-                }
+            if (userFile != null) {
+                UserKey key = getKeyFromFile(userFile, keyType);
+                System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
             } else {
                 missingFiles++;
             }
@@ -169,14 +141,10 @@ public class FileHelper {
      */
     public File retrieveUserFile(String username, String keyType) {
         File[] fileList = new File(getBaseDirectory() + "/" + keyType).listFiles();
-        // Match the first part of the file name, up until the first underscore.
-        String regex = "^" + Pattern.quote(username) + "_.*$";
-        Pattern pattern = Pattern.compile(regex);
         
-        for (File file : fileList) {
-            if (pattern.matcher(file.getName()).matches()) {
-                return file;
-            }
+        int userFileIndex = binarySearch(fileList, username);
+        if (userFileIndex > -1) {
+            return fileList[userFileIndex];
         }
         
         return null;
@@ -188,23 +156,11 @@ public class FileHelper {
      * @return True if a public or a private key file already exists with the given username, false otherwise.
      */
     public boolean usernameTaken(String username) {
-        String regex = "^" + Pattern.quote(username) + "_.*$";
-        Pattern pattern = Pattern.compile(regex);
-        
-        String[] publicList = new File(getBaseDirectory() + "public").list();
-        String[] privateList = new File(getBaseDirectory() + "private").list();
+        File[] publicList = new File(getBaseDirectory() + "/public").listFiles();
+        File[] privateList = new File(getBaseDirectory() + "/private").listFiles();
                 
-        List<String> allFileNames = new ArrayList<>(Arrays.asList(publicList));
-        allFileNames.addAll(Arrays.asList(privateList));
-        allFileNames.sort(String::compareToIgnoreCase);
-
-        for (String name : allFileNames) {
-            if (pattern.matcher(name).matches()) {
-                return true;
-            }
-        }
-        
-        return false;
+        // It should never happen that one of the key files does not exist, but it's not impossible. Check both directories.       
+        return binarySearch(publicList, username) > -1 || binarySearch(privateList, username) > -1;
     }
     
     /**
@@ -250,13 +206,14 @@ public class FileHelper {
      * @return The index of the file in the list if found, -1 otherwise.
      */
     public int binarySearch(File[] fileList, String username) {
+        Arrays.sort(fileList);
         int low = 0, middle = 0;
         int high = fileList.length - 1;
                         
         while (low <= high) {
             middle = low + ((high - low) / 2);
             String userFileName = fileList[middle].getName();
-            String nameStart = CustomFileComparator.getNameStart(userFileName);
+            String nameStart = getNameStart(userFileName);
             
             // Found a file name that matches the username.
             if (nameStart.equals(username)) {
@@ -275,5 +232,20 @@ public class FileHelper {
         
         // The file was not found.
         return -1;
+    }
+    
+    /**
+     * Get the beginning of the file name if it contains underscores.
+     * @param fileName The complete file name to check.
+     * @return The beginning of the file name up until the first underscore. If no underscores are found, return the original file name.
+     */
+    public String getNameStart(String fileName) {
+        int dotIndex = fileName.indexOf(".");
+
+        if (dotIndex != -1) {
+            return fileName.substring(0, dotIndex);
+        } else {
+            return fileName;
+        }
     }
 }

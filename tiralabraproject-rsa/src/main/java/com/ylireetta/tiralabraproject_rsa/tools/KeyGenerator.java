@@ -5,65 +5,15 @@ import com.ylireetta.tiralabraproject_rsa.PublicKey;
 import com.ylireetta.tiralabraproject_rsa.UserKey;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import java.util.List;
 
 public class KeyGenerator {
-    private PublicKey publicKey;
-    private PrivateKey privateKey;
-    private ArrayList<UserKey> keys;
-        
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
-    
-    public PrivateKey getPrivateKey() {
-        return privateKey;
-    }
-    
-    public ArrayList<UserKey> getKeys() {
-        return keys;
-    }
-    
-    /**
-     * Set the private variable PublicKey and add the key to the list of UserKey objects.
-     * @param key The key to set.
-     */
-    public void setPublicKey(PublicKey key) {
-        this.publicKey = key;
-        this.keys.add(key);
-    }
-    
-    /**
-     * Set the private variable PrivateKey and add the key to the list of UserKey objects.
-     * @param key The key to set.
-     */
-    public void setPrivateKey(PrivateKey key) {
-        this.privateKey = key;
-        this.keys.add(key);
-    }
-    
-    /**
-     * Overwrite previous key list so that new user keys can be created.
-     */
-    public void resetKeyList() {
-        this.keys = new ArrayList();
-    }
-    
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-            .append("publicKey", publicKey)
-            .append("privateKey", privateKey)
-            .toString();
-    }
-    
     /**
      * Generate public and private keys.
+     * @return A list with public and private user keys.
      */
-    public void generateKeys() {
-        resetKeyList();
-        
+    public static List<UserKey> generateKeys() {
+        ArrayList<UserKey> result = new ArrayList<>();
         BigInteger p = PrimeHelper.generatePrime();
         BigInteger q = PrimeHelper.generatePrime();
         
@@ -75,14 +25,16 @@ public class KeyGenerator {
         BigInteger n = p.multiply(q);
         
         PublicKey publicKey = createPublicKey(n);
-        setPublicKey(publicKey);
+        result.add(publicKey);
         
         BigInteger publicExponent = publicKey.getExponent();
         PrivateKey privateKey = createPrivateKey(p, q, publicExponent, n);
         
         if (privateKey != null) {
-            setPrivateKey(privateKey);
+            result.add(privateKey);
         }
+        
+        return result;
     }
     
     /**
@@ -90,7 +42,7 @@ public class KeyGenerator {
      * @param n The result of multiplying p by q.
      * @return A new PublicKey.
      */
-    public PublicKey createPublicKey(BigInteger n) {
+    public static PublicKey createPublicKey(BigInteger n) {
         /* Choose a number e:
         e and (p - 1) * (q - 1) have no common factor except 1 (this gets tested when the extended euclidean algorithm is run). i.e., e is coprime to φ(n)
         The most common choice for 'e' is 65537.
@@ -107,7 +59,7 @@ public class KeyGenerator {
      * @param n The result of multiplying p by q.
      * @return A new PrivateKey if the greatest common divisor of the public exponent and Euler's totient function is equal to one, null otherwise.
      */
-    public PrivateKey createPrivateKey(BigInteger p, BigInteger q, BigInteger publicExponent, BigInteger n) {
+    public static PrivateKey createPrivateKey(BigInteger p, BigInteger q, BigInteger publicExponent, BigInteger n) {
         // φ(n) (Euler's totient function) as φ(n) = (p - 1) * (q - 1)
         BigInteger euler = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
         BigInteger[] extendedEuclideanResult = PrimeHelper.extendedEuclidean(publicExponent, euler);

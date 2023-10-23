@@ -1,18 +1,16 @@
+import com.ylireetta.tiralabraproject_rsa.UserKey;
 import com.ylireetta.tiralabraproject_rsa.tools.KeyGenerator;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class KeyGeneratorTest {
-    private KeyGenerator generator = new KeyGenerator();
-    
+public class KeyGeneratorTest {    
     @Test
-    public void keysGetGenerated() {
-        Assertions.assertNull(generator.getPublicKey());
-        Assertions.assertNull(generator.getPrivateKey());
+    public void keysGetGenerated() {        
+        List<UserKey> keys = KeyGenerator.generateKeys();
         
-        generator.generateKeys();
-        
-        Assertions.assertNotNull(generator.getPublicKey());
-        Assertions.assertNotNull(generator.getPrivateKey());
+        for (UserKey key : keys) {
+            Assertions.assertNotNull(key);
+        }   
     }
 }

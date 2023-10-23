@@ -1,6 +1,5 @@
 import com.ylireetta.tiralabraproject_rsa.PublicKey;
 import com.ylireetta.tiralabraproject_rsa.UserKey;
-import com.ylireetta.tiralabraproject_rsa.tools.CustomFileComparator;
 import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,8 +20,8 @@ public class FileHelperTest {
     
     private FileHelper fileHelper;
     
-    private final String publicFileName = "public/testuser_public_key.txt";
-    private final String privateFileName = "private/testuser_private_key.txt";
+    private final String publicFileName = "public/testuser.txt";
+    private final String privateFileName = "private/testuser.txt";
     
     @BeforeEach
     public void setup() throws IOException {
@@ -45,20 +44,26 @@ public class FileHelperTest {
     
     @Test
     public void fileGetsCreated() throws IOException {
-        boolean result = fileHelper.writeKeys("testuser");
+        PublicKey key = new PublicKey(
+                BigInteger.ONE,
+                BigInteger.TEN
+        );
+        boolean result = fileHelper.writeToFile("testuser", key);
         
         File file1 = tempDir.resolve(publicFileName).toFile();
-        File file2 = tempDir.resolve(privateFileName).toFile();
         
         assertTrue(file1.exists());
-        assertTrue(file2.exists());
         assertTrue(result);
     }
     
     @Test
     public void writeKeysDoesNotCreateDuplicateFiles() throws IOException {
-        boolean firstResult = fileHelper.writeKeys("testuser");
-        boolean secondResult = fileHelper.writeKeys("testuser");
+        PublicKey key = new PublicKey(
+                BigInteger.ONE,
+                BigInteger.TEN
+        );
+        boolean firstResult = fileHelper.writeToFile("testuser", key);
+        boolean secondResult = fileHelper.writeToFile("testuser", key);
         
         assertTrue(firstResult);
         assertFalse(secondResult);
@@ -67,18 +72,18 @@ public class FileHelperTest {
     @Test
     public void writeToFileReturnsTrueIfSuccessful() throws IOException {
         UserKey key = new PublicKey(BigInteger.TEN, BigInteger.TWO);
-        assertTrue(fileHelper.writeToFile("public", "someUser", key));
+        assertTrue(fileHelper.writeToFile("someUser", key));
     }
     
     @Test
     public void writeToFileReturnsFalseIfNotSuccessful() throws IOException {
         // writeToFile calls createFile which returns false if a file with the same name already exists. Create a file first so that createFile returns false later.
-        String newFileName = "public/someUser_public_key.txt";
+        String newFileName = "public/someUser.txt";
         UserKey key = new PublicKey(BigInteger.TEN, BigInteger.TWO);
         File publicFile = new File(tempDir.toString() + "/" + newFileName);
         publicFile.createNewFile();
         
-        assertFalse(fileHelper.writeToFile("public", "someUser", key));
+        assertFalse(fileHelper.writeToFile("someUser", key));
     }
     
     @Test
@@ -89,7 +94,7 @@ public class FileHelperTest {
     
     @Test
     public void createFileCreatesFileWhenUsernameContainsCapitalLetters() {
-        String fileName = tempDir.toString() + "/" + "public/HereWeHaveCaPiTaL_public_key.txt";
+        String fileName = tempDir.toString() + "/" + "public/HereWeHaveCaPiTaL.txt";
         assertTrue(fileHelper.createFile(fileName));
     }
     
@@ -105,7 +110,7 @@ public class FileHelperTest {
         Files.write(publicFile.toPath(), content.getBytes());
         Files.write(privateFile.toPath(), content.getBytes());
         
-        // This method is void at the moment and just prints the contents of the files, so more helpful assertions need to be written in the coming weeks.        
+        // This method is void at the moment and just prints the contents of the files.    
         assertDoesNotThrow(() -> fileHelper.readFromFile("testuser"));
     }
     
@@ -195,15 +200,7 @@ public class FileHelperTest {
     @Test
     public void binarySearchReturnsExpectedOrder() {
         File[] files = createTestFileArray();
-        Arrays.sort(files);
-        
-        int firstIndexBeforeComparator = fileHelper.binarySearch(files, "reetta");
-        
-        // After initial sort, the username is not found at all.
-        assertEquals(-1, firstIndexBeforeComparator);
-        
-        Arrays.sort(files, new CustomFileComparator());
-        
+                
         int smallerIndex = fileHelper.binarySearch(files, "reetta");
         int biggerIndex = fileHelper.binarySearch(files, "reetta6");
         
@@ -213,7 +210,6 @@ public class FileHelperTest {
     @Test
     public void binarySearchReturnsExpectedIfFileNotFound() {
         File[] files = createTestFileArray();
-        Arrays.sort(files, new CustomFileComparator());
         
         assertEquals(-1, fileHelper.binarySearch(files, "testnamenotfound"));
     }
@@ -224,19 +220,19 @@ public class FileHelperTest {
      */
     private File[] createTestFileArray() {
         String[] fileNames = new String[]{
-            "ällömöllö_private_key.txt",
-            "testfile605_private_key.txt",
-            "first_private_key.txt",
-            "testfile_private_key.txt",
-            "testfile1_private_key.txt",
-            "45file_private_key.txt",
-            "tttttest_private_key.txt",
-            "test_private_key.txt",
-            "abcd_private_key.txt",
-            "reetta6_private_key.txt",
-            "reetta5_private_key.txt",
-            "reetta_private_key.txt",
-            "reettax_private_key.txt"
+            "ällömöllö.txt",
+            "testfile605.txt",
+            "first.txt",
+            "testfile.txt",
+            "testfile1.txt",
+            "45file.txt",
+            "tttttest.txt",
+            "test.txt",
+            "abcd.txt",
+            "reetta6.txt",
+            "reetta5.txt",
+            "reetta.txt",
+            "reettax.txt"
         };
         
         File[] files = new File[fileNames.length];

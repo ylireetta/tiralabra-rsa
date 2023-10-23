@@ -27,7 +27,7 @@ public class EncryptionHelperTest {
     
     private static FileHelper fileHelper;
 
-    private static final String PUBLICFILENAME = "public/testuser_public_key.txt";
+    private static final String PUBLICFILENAME = "public/testuser.txt";
     
     private static EncryptionHelper encryptionHelper;
 

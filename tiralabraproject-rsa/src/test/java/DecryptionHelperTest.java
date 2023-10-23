@@ -32,7 +32,7 @@ public class DecryptionHelperTest {
     
     private static FileHelper fileHelper;
 
-    private static final String PRIVATEFILENAME = "private/testuser_private_key.txt";
+    private static final String PRIVATEFILENAME = "private/testuser.txt";
     
     private static DecryptionHelper decryptionHelper;
 
