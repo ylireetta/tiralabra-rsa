@@ -1,12 +1,7 @@
 # Testing documentation
+The test coverage of the project is 64 % in total. Automatic tests for `UserInterface`, `PublicKey` and `PrivateKey` in package `com.ylireetta.tiralabraproject_rsa` have not been implemented due to the nature of those classes, which affects the total coverage. The `com.ylireetta.tiralabraproject_rsa.tools` package coverage is 89 %.
 
-## Should contain: 
-- What has been tested and how
-- What types of input were used (especially important for comparative analysis)
-- How can the tests be repeated
-- Results of empirical testing presented in graphical form
-- Tests should ideally be a runnable program. This makes repeating the tests easy
-- For Java it is recommended to do unit testing with JUnit
+![alt text](pics/coverage.png "Test coverage")
 
 ## How to replicate test results
 The automatic tests can be run by cloning the project, navigating to the project root directory (i.e., the directory where the pom.xml file resides), and running the command `mvn test`.
@@ -23,5 +18,3 @@ The tests for the `FileHelper` class verify that files are created, written to, 
 The `EncryptionHelper` and `DecryptionHelper` classes are tested by creating the test data (i.e., the encrypted message) by using the `modPow()` method of the `BigInteger` class. `EncryptionHelper` result is expected to equal the result of the `modPow()` operation. When testing `DecryptionHelper`, `modPow()` is called again using the private key components to create the expected result. The result from the `DecryptionHelper` is then expected to equal the result of the second `modPow()` operation.
 
 The `KeyGenerator` class is tested by simply asserting that the keys are available after making the call to generate keys.
-
-Performance testing has not been implemented (yet?). I'm not entirely sure how to do that.

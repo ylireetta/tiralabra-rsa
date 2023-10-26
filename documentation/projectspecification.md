@@ -20,7 +20,7 @@ There are two use cases:
     - Program input 1 = recipient's username
     - Program input 2 = the message to encrypt
     - Encryption:
-        - The program searches for a text file containing the public key of the recipient using program input 1 (e.g., recipientname_public_key.txt)
+        - The program searches for a text file containing the public key of the recipient using program input 1 (e.g., recipientname.txt)
         - If a public key is found, it is used to encrypt the message (program input 2)
         - If a public key is *not* found, the key pair for the recipient is generated on the fly, written in text files, and the public key is used to encrypt the message (program input 2)
     - The output is the RSA encrypted message
@@ -29,7 +29,7 @@ There are two use cases:
     - Program input 1 = current user's username (i.e., the recipient)
     - Program input 2 = the message to decrypt
     - Decryption:
-        - The program searches for a text file containing the private key of the recipient using program input 1 (e.g., recipientname_private_key.txt)
+        - The program searches for a text file containing the private key of the recipient using program input 1 (e.g., recipientname.txt)
         - If a private key is found, it used to decrypt the message (program input 2)
         - If a private key is *not* found, an error message is shown to the user and the program returns to the main menu
     - In case of successful encryption, the output is the decrypted message

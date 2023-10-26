@@ -44,3 +44,9 @@ Run tests and generate a JaCoCo report by running
 mvn test jacoco:report
 ```
 This will run the JUnit tests and generate a human-readable report to `target/site/jacoco/index.html`.
+
+Run Checkstyle and generate a report by running
+```
+mvn checkstyle:checkstyle
+```
+This will run the checks configured in `checkstyle.xml` and generate a human-readable report to `target/site/checkstyle.html`.
