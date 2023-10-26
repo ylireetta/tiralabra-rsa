@@ -67,7 +67,7 @@ public class UserInterface {
                 System.out.println("Username already taken.");
             } else {
                 List<UserKey> keys = generateKeys();
-                writeKeysToFile(username, keys);
+                writeKeysToFile(username, keys, true);
             }
         }
     }
@@ -172,7 +172,7 @@ public class UserInterface {
         if (encrypt && !fileHelper.usernameTaken(username)) {
             // Create key files if none exist for the current user. This should only be done when encrypting.
             List<UserKey> keys = generateKeys();
-            writeKeysToFile(username, keys);
+            writeKeysToFile(username, keys, false);
             return true;
         }
         
@@ -240,7 +240,7 @@ public class UserInterface {
      * @param username The username to use when creating the file name.
      * @param keys The list with the UserKeys that should be written to files.
      */
-    private void writeKeysToFile(String username, List<UserKey> keys) {
+    private void writeKeysToFile(String username, List<UserKey> keys, boolean printSuccess) {
         boolean failed = false;
         
         for (UserKey key : keys) {
@@ -254,7 +254,7 @@ public class UserInterface {
             }
         }
         
-        if (!failed) {
+        if (!failed && printSuccess) {
             System.out.println("Wrote user keys to file successfully!");
             System.out.println("The key files can be found under the subdirectories of " + fileHelper.getBaseDirectory() + ".\n");
         }
