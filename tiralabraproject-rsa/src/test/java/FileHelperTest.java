@@ -101,7 +101,7 @@ public class FileHelperTest {
     }
     
     @Test
-    public void readFileIsSuccessful() throws IOException {
+    public void collectKeysIsSuccessful() throws IOException {
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
         File privateFile = new File(tempDir.toString() + "/" + privateFileName);
@@ -112,13 +112,13 @@ public class FileHelperTest {
         Files.write(publicFile.toPath(), content.getBytes());
         Files.write(privateFile.toPath(), content.getBytes());
         
-        List<UserKey> result = fileHelper.readFromFile(username);
+        List<UserKey> result = fileHelper.collectKeys(username);
         assertEquals(2, result.size());
     }
     
     @Test
-    public void readFileThrowsExceptionIfFileNotFound() {
-        assertThrows(FileNotFoundException.class, () -> fileHelper.readFromFile(username));
+    public void collectKeysThrowsExceptionIfFileNotFound() {
+        assertThrows(FileNotFoundException.class, () -> fileHelper.collectKeys(username));
     }
     
     @Test

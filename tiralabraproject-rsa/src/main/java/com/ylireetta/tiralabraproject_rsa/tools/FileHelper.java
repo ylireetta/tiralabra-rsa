@@ -108,13 +108,13 @@ public class FileHelper {
     }
     
     /**
-     * Read the contents of both the public and private user key files.
-     * @param username The user whose files should be read.
-     * @return 
+     * Collect user keys.
+     * @param username The user whose keys should be retrieved.
+     * @return A list with user key(s) if at least one was found.
      * @throws java.io.FileNotFoundException If neither public nor private key files can be found for the specified user.
      * @throws IOException 
      */
-    public List<UserKey> readFromFile(String username) throws FileNotFoundException, IOException {
+    public List<UserKey> collectKeys(String username) throws FileNotFoundException, IOException {
         int missingFiles = 0;
         List<UserKey> result = new ArrayList<>();
         
