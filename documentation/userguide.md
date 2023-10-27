@@ -1,13 +1,13 @@
 # User guide
-The executable JAR can be found in LINK TO JAR.
+The executable JAR can be found in [releases](https://github.com/ylireetta/tiralabra-rsa/releases).
 
-If you have cloned the project yourself from Github, you can create the executable JAR yourself by running the following command in the project root directory:
+If the project has been cloned from Github, the executable JAR can be created by running the following command in the project root directory:
 ```
 mvn clean compile test package
 ```
 Tests can be skipped by running
 ```
-mvn clean compile package
+mvn clean compile package -DskipTests
 ```
 The JAR can now be found in the `target` directory.
 
