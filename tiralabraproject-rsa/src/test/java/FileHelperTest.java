@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -151,6 +150,14 @@ public class FileHelperTest {
     }
     
     @Test
+    public void usernameTakenReturnsTrueWhenEitherKeyExists() throws IOException {
+        // If keys of both publicity classes are not found, usernameTaken still returns true, because a new file cannot be created using the same username/filename.
+        File privateFile = new File(tempDir.toString() + "/" + privateFileName);
+        privateFile.createNewFile();
+        assertTrue(fileHelper.usernameTaken(username));
+    }
+    
+    @Test
     public void getKeyFromFileReturnsKey() throws IOException {
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
@@ -215,6 +222,16 @@ public class FileHelperTest {
         File[] files = createTestFileArray();
         
         assertEquals(-1, fileHelper.binarySearch(files, "testnamenotfound"));
+    }
+    
+    @Test
+    public void getNameStartReturnsExpectedIfDotsFound() {
+        String fileNameWithDot = "ihavedots.txt";
+        String fileNameWithoutDot = "filenamewithoutdot";
+        String resultWithDot = fileHelper.getNameStart(fileNameWithDot);
+        
+        assertEquals(-1, resultWithDot.indexOf("."));
+        assertEquals(fileNameWithoutDot, fileHelper.getNameStart(fileNameWithoutDot));
     }
     
     /**

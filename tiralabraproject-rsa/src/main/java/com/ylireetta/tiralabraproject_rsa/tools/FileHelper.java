@@ -239,9 +239,9 @@ public class FileHelper {
     }
     
     /**
-     * Get the beginning of the file name if it contains underscores.
+     * Get the beginning of the file name if it contains dots.
      * @param fileName The complete file name to check.
-     * @return The beginning of the file name up until the first underscore. If no underscores are found, return the original file name.
+     * @return The beginning of the file name up until the first dot. If no dots are found, return the original file name.
      */
     public String getNameStart(String fileName) {
         int dotIndex = fileName.indexOf(".");
