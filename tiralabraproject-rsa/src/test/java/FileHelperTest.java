@@ -8,6 +8,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,8 +21,10 @@ public class FileHelperTest {
     
     private FileHelper fileHelper;
     
-    private final String publicFileName = "public/testuser.txt";
-    private final String privateFileName = "private/testuser.txt";
+    private final String username = "testuser";
+    
+    private final String publicFileName = "public/" + username + ".txt";
+    private final String privateFileName = "private/" + username + ".txt";
     
     @BeforeEach
     public void setup() throws IOException {
@@ -48,7 +51,7 @@ public class FileHelperTest {
                 BigInteger.ONE,
                 BigInteger.TEN
         );
-        boolean result = fileHelper.writeToFile("testuser", key);
+        boolean result = fileHelper.writeToFile(username, key);
         
         File file1 = tempDir.resolve(publicFileName).toFile();
         
@@ -62,8 +65,8 @@ public class FileHelperTest {
                 BigInteger.ONE,
                 BigInteger.TEN
         );
-        boolean firstResult = fileHelper.writeToFile("testuser", key);
-        boolean secondResult = fileHelper.writeToFile("testuser", key);
+        boolean firstResult = fileHelper.writeToFile(username, key);
+        boolean secondResult = fileHelper.writeToFile(username, key);
         
         assertTrue(firstResult);
         assertFalse(secondResult);
@@ -110,13 +113,13 @@ public class FileHelperTest {
         Files.write(publicFile.toPath(), content.getBytes());
         Files.write(privateFile.toPath(), content.getBytes());
         
-        // This method is void at the moment and just prints the contents of the files.    
-        assertDoesNotThrow(() -> fileHelper.readFromFile("testuser"));
+        List<UserKey> result = fileHelper.readFromFile(username);
+        assertEquals(2, result.size());
     }
     
     @Test
     public void readFileThrowsExceptionIfFileNotFound() {
-        assertThrows(FileNotFoundException.class, () -> fileHelper.readFromFile("testuser"));
+        assertThrows(FileNotFoundException.class, () -> fileHelper.readFromFile(username));
     }
     
     @Test
@@ -124,7 +127,7 @@ public class FileHelperTest {
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
         
-        assertNotNull(fileHelper.retrieveUserFile("testuser", "public"));
+        assertNotNull(fileHelper.retrieveUserFile(username, "public"));
     }
     
     @Test
@@ -138,12 +141,12 @@ public class FileHelperTest {
     
     @Test
     public void usernameTakenChangesValue() throws IOException {
-        assertFalse(fileHelper.usernameTaken("testuser"));
+        assertFalse(fileHelper.usernameTaken(username));
         
         File publicFile = new File(tempDir.toString() + "/" + publicFileName);
         publicFile.createNewFile();
         
-        assertTrue(fileHelper.usernameTaken("testuser"));
+        assertTrue(fileHelper.usernameTaken(username));
         assertFalse(fileHelper.usernameTaken("anotheruser"));
     }
     

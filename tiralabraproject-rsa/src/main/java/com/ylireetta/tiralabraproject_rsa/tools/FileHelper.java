@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class FileHelper {
     private final ArrayList<String> keyTypes = new ArrayList<>(Arrays.asList("public", "private"));
@@ -109,18 +110,20 @@ public class FileHelper {
     /**
      * Read the contents of both the public and private user key files.
      * @param username The user whose files should be read.
+     * @return 
      * @throws java.io.FileNotFoundException If neither public nor private key files can be found for the specified user.
      * @throws IOException 
      */
-    public void readFromFile(String username) throws FileNotFoundException, IOException {
+    public List<UserKey> readFromFile(String username) throws FileNotFoundException, IOException {
         int missingFiles = 0;
+        List<UserKey> result = new ArrayList<>();
         
         for (String keyType : keyTypes) {
             File userFile = retrieveUserFile(username, keyType);
             
             if (userFile != null) {
                 UserKey key = getKeyFromFile(userFile, keyType);
-                System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
+                result.add(key);
             } else {
                 missingFiles++;
             }
@@ -130,6 +133,8 @@ public class FileHelper {
         if (missingFiles == 2) {
             throw new FileNotFoundException("Key files missing for user " + username + ".");
         }
+        
+        return result;
     }
     
     /**

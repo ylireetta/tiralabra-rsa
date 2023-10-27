@@ -81,7 +81,10 @@ public class UserInterface {
         
         if (username != null) {
             try {
-                fileHelper.readFromFile(username);
+                List<UserKey> userKeys = fileHelper.readFromFile(username);
+                for (UserKey key : userKeys) {
+                    System.out.println("Found " + key.getType() + " key, and it looks like this:\nexponent: " + key.getExponent() + "\nmodulus: " + key.getModulus());
+                }
             } catch (FileNotFoundException e) {
                 // This exception is thrown if both public and private key files are missing.
                 System.out.println(e.getMessage());
