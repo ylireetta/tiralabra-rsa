@@ -1,4 +1,6 @@
-import com.ylireetta.tiralabraproject_rsa.UserKey;
+package com.ylireetta.tiralabraproject_rsa.tools;
+
+import com.ylireetta.tiralabraproject_rsa.interfaces.UserKey;
 import com.ylireetta.tiralabraproject_rsa.tools.KeyGenerator;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;

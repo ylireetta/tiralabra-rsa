@@ -1,6 +1,6 @@
 package com.ylireetta.tiralabraproject_rsa.tools;
 
-import com.ylireetta.tiralabraproject_rsa.UserKey;
+import com.ylireetta.tiralabraproject_rsa.interfaces.UserKey;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -1,5 +1,6 @@
-package com.ylireetta.tiralabraproject_rsa;
+package com.ylireetta.tiralabraproject_rsa.pojo;
 
+import com.ylireetta.tiralabraproject_rsa.interfaces.UserKey;
 import java.math.BigInteger;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

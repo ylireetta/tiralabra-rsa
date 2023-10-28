@@ -1,8 +1,8 @@
 package com.ylireetta.tiralabraproject_rsa.tools;
 
-import com.ylireetta.tiralabraproject_rsa.PrivateKey;
-import com.ylireetta.tiralabraproject_rsa.PublicKey;
-import com.ylireetta.tiralabraproject_rsa.UserKey;
+import com.ylireetta.tiralabraproject_rsa.pojo.PrivateKey;
+import com.ylireetta.tiralabraproject_rsa.pojo.PublicKey;
+import com.ylireetta.tiralabraproject_rsa.interfaces.UserKey;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;

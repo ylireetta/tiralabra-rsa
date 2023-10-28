@@ -1,4 +1,4 @@
-package com.ylireetta.tiralabraproject_rsa;
+package com.ylireetta.tiralabraproject_rsa.interfaces;
 
 import java.math.BigInteger;
 

@@ -1,5 +1,6 @@
 package com.ylireetta.tiralabraproject_rsa;
 
+import com.ylireetta.tiralabraproject_rsa.interfaces.UserKey;
 import com.ylireetta.tiralabraproject_rsa.tools.DecryptionHelper;
 import com.ylireetta.tiralabraproject_rsa.tools.EncryptionHelper;
 import com.ylireetta.tiralabraproject_rsa.tools.FileHelper;
@@ -49,6 +50,8 @@ public class UserInterface {
                 System.out.println("Thank you for visiting!");
                 scanner.close();
                 break;
+            } else {
+                System.out.println("Please choose from the commands available.");
             }
             
             System.out.println(".+*+.+*+.");

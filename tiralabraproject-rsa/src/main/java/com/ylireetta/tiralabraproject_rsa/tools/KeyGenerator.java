@@ -1,8 +1,8 @@
 package com.ylireetta.tiralabraproject_rsa.tools;
 
-import com.ylireetta.tiralabraproject_rsa.PrivateKey;
-import com.ylireetta.tiralabraproject_rsa.PublicKey;
-import com.ylireetta.tiralabraproject_rsa.UserKey;
+import com.ylireetta.tiralabraproject_rsa.pojo.PrivateKey;
+import com.ylireetta.tiralabraproject_rsa.pojo.PublicKey;
+import com.ylireetta.tiralabraproject_rsa.interfaces.UserKey;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
