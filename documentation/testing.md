@@ -9,11 +9,11 @@ The automatic tests can be run by cloning the project, navigating to the project
 The test report can be generated to `target/site/jacoco/index.html` by running `mvn test jacoco:report` in the project root directory.
 
 ## What has been tested
-Tests have been written for classes that contain some sort of program logic. `UserKey`, `PublicKey` and `PrivateKey` have not been tested, because they comprise of getters, setters, and `toString()` methods.
+Tests have been written for classes that contain some sort of program logic. `UserKey`, `PublicKey` and `PrivateKey` have not been tested, because they comprise of getters, setters, and `toString()` methods. `UserInterface` has also been left untested as it does not contain program logic and is used solely for interacting with the user.
 
 `PrimeHelper` tests verify that prime as well as composite numbers are detected successfully. The helper methods of the class are also tested. Some of the self-implemented methods are compared to the readily available methods of the `BigInteger` class.
 
-The tests for the `FileHelper` class verify that files are created, written to, and read successfully. Also unsuccessful results are tested, e.g. by attempting to create multiple files of the same publicity class for the same user, and by attempting to read files that do not exist.
+The tests for the `FileHelper` class verify that files are created, written to, and read successfully. Also unsuccessful results are tested, e.g., by attempting to create multiple files of the same publicity class for the same user, and by attempting to read files that do not exist.
 
 The `EncryptionHelper` and `DecryptionHelper` classes are tested by creating the test data (i.e., the encrypted message) by using the `modPow()` method of the `BigInteger` class. `EncryptionHelper` result is expected to equal the result of the `modPow()` operation. When testing `DecryptionHelper`, `modPow()` is called again using the private key components to create the expected result. The result from the `DecryptionHelper` is then expected to equal the result of the second `modPow()` operation.
 

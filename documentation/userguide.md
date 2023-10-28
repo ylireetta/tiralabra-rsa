@@ -26,9 +26,9 @@ The user chooses the command `1` and presses enter. The program asks the user fo
 
 ![alt text](pics/invalid_username.png "Invalid username")
 
-![alt text](pics/username_taken.png "Username taken")
-
 ![alt text](pics/successful_generation.png "Keys generated successfully")
+
+![alt text](pics/username_taken.png "Username taken")
 
 ### Read keys
 The user chooses the command `2` and presses enter. The program asks the user for their name and checks if key files for the provided username exist. If files are found, both the public and private keys are read from the files and printed on the command line. If no key files exist for the provided username, the program informs the user of this, and the user is returned to the main menu.
