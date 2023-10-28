@@ -1,5 +1,5 @@
 # Testing documentation
-The test coverage of the project is 64 % in total. Automatic tests for `UserInterface`, `PublicKey` and `PrivateKey` in package `com.ylireetta.tiralabraproject_rsa` have not been implemented due to the nature of those classes, which affects the total coverage. The `com.ylireetta.tiralabraproject_rsa.tools` package coverage is 89 %.
+The test coverage of the project is 89 %. Automatic tests have been written for classes in the `com.ylireetta.tiralabraproject_rsa.tools` package. Several classes have been excluded from the coverage report due to the nature of those classes (POJOs, interfaces, the UI).
 
 ![alt text](pics/coverage.png "Test coverage")
 
