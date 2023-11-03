@@ -22,7 +22,7 @@ There are four functionalities to choose from. The user can create a public and 
 ![alt text](pics/program_menu.png "Main menu")
 
 ### Generate keys
-The user chooses the command `1` and presses enter. The program asks the user for their name and checks if it's valid (i.e., does not contain dots due to the file naming conventions) and available (i.e., if there already exists a key file with the provided name). If the name is free to use, public and private keys are generated and saved into text files in their respective directories. In case of successful key generation and file creation, the path to the key file directories is printed on the command line. If the username is already taken, the program infroms the user of this, and the user is returned to the main menu.
+The user chooses the command `1` and presses enter. The program asks the user for their name and checks if it's valid (i.e., does not contain dots due to the file naming conventions) and available (i.e., if there already exists a key file with the provided name). If the name is free to use, public and private keys are generated and saved into text files in their respective directories. In case of successful key generation and file creation, the path to the key file directories is printed on the command line. If the username is already taken, the program informs the user of this, and the user is returned to the main menu.
 
 ![alt text](pics/invalid_username.png "Invalid username")
 
